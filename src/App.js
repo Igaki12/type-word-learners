@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg'
+import { Text, Center, Flex, Box } from '@chakra-ui/react'
+import './App.css'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Center>
+      <Flex>
+        <Box>
+          <Text fontFamily={'fantasy'} fontSize="7xl">
+            ≫
+          </Text>
+        </Box>
+        <Box>
+          <Text fontFamily={'fantasy'} color="yellow" fontSize="7xl">
+            TYPE
+          </Text>
+          <Text fontFamily={'fantasy'} fontSize="7xl" mt={-10}>
+            WORD
+          </Text>
+          <Text fontFamily={'fantasy'} fontSize="7xl" mt={-10}>
+            LEARNERS
+          </Text>
+        </Box>
+      </Flex>
+    </Center>
+  )
 }
 
-export default App;
+export default App
