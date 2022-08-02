@@ -1,11 +1,14 @@
-import logo from './logo.svg'
-import { Text, Center, Flex, Box } from '@chakra-ui/react'
+import logo from './title2.png'
+import { Text, Center, Flex, Box, Image } from '@chakra-ui/react'
 import './App.css'
 
 function App() {
   return (
     <Center>
-      <Flex>
+      <Box maxW={'sm'} bgColor="white">
+        <Image src={logo} alt="Dan Abramov" />
+      </Box>
+      {/* <Flex>
         <Box>
           <Text fontFamily={'fantasy'} fontSize="7xl">
             ≫
@@ -22,7 +25,7 @@ function App() {
             LEARNERS
           </Text>
         </Box>
-      </Flex>
+      </Flex> */}
     </Center>
   )
 }
