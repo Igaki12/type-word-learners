@@ -1,11 +1,15 @@
 import logo from './title2.png'
-import { Text, Center, Flex, Box, Image } from '@chakra-ui/react'
+import { Text, Center, Box, Image } from '@chakra-ui/react'
 import './App.css'
 
 function App() {
   return (
     <Center>
-      <Box maxW={'sm'} bgColor="white">
+      <Box
+        maxW={'sm'}
+        // bgColor="white"
+        className="blink"
+      >
         <Image src={logo} alt="Dan Abramov" />
       </Box>
       {/* <Flex>
