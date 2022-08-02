@@ -30,10 +30,10 @@ function App() {
         // bgColor="white"
       >
         <Button colorScheme="white" variant="ghost" fontSize={'3xl'}>
-          ≫Practice
+          {'>'}Practice
         </Button>
         <Button colorScheme="white" variant="ghost" fontSize={'3xl'}>
-          ≫Easy for smartphone
+          {'>'}Easy for smartphone
         </Button>
         <Button
           colorScheme="white"
@@ -41,7 +41,7 @@ function App() {
           fontSize={'3xl'}
           color="purple.200"
         >
-          ≫Hard for PC
+          {'>'}Hard for PC
         </Button>
       </Box>
       <Box
