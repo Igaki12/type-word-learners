@@ -109,9 +109,10 @@ function App() {
         pl="5"
         pt={'3'}
         pb="8"
-        mb="1"
+        mb="4"
+        mt="4"
       >
-        <Stack spacing={[2]} direction={['column']}>
+        <Stack spacing={[4]} direction={['column']}>
           <Checkbox size={'lg'} colorScheme="gray">
             GWL1
           </Checkbox>
@@ -123,7 +124,7 @@ function App() {
           </Checkbox>
         </Stack>
       </Box>
-      <Box margin={'auto'} maxW={'sm'} textAlign={'center'} mb="2">
+      <Box margin={'auto'} maxW={'sm'} textAlign={'center'} mb="4">
         <InputGroup>
           <InputLeftElement
             pointerEvents="none"
