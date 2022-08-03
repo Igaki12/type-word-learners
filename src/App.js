@@ -30,6 +30,8 @@ function App() {
         maxW={'sm'}
         // bgColor="white"
         className="blink"
+        mt={10}
+        mb="10"
       >
         <Image src={logo} alt="Dan Abramov" />
       </Box>
@@ -55,8 +57,8 @@ function App() {
         margin={'auto'}
         maxW={'sm'}
         textAlign={'left'}
-        mt="4"
-        mb="2"
+        mt="6"
+        mb="10"
         pl={'5'}
         // bgColor="white"
       >
@@ -109,7 +111,7 @@ function App() {
         pb="8"
         mb="1"
       >
-        <Stack spacing={[1]} direction={['column']}>
+        <Stack spacing={[2]} direction={['column']}>
           <Checkbox size={'lg'} colorScheme="gray">
             GWL1
           </Checkbox>
