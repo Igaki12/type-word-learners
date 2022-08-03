@@ -65,7 +65,7 @@ function App() {
         <Button
           colorScheme="gray"
           variant="ghost"
-          fontSize={'3xl'}
+          fontSize={'2xl'}
           pl="1"
           borderRadius={'sm'}
           autoFocus
@@ -75,7 +75,7 @@ function App() {
         <Button
           colorScheme="gray"
           variant="ghost"
-          fontSize={'3xl'}
+          fontSize={'2xl'}
           pl="1"
           borderRadius={'sm'}
         >
@@ -84,7 +84,7 @@ function App() {
         <Button
           colorScheme="gray"
           variant="ghost"
-          fontSize={'3xl'}
+          fontSize={'2xl'}
           pl="1"
           borderRadius={'sm'}
         >
