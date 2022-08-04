@@ -15,17 +15,17 @@ export const Practice = ({ vocabulary }) => {
           <Text>　</Text>
         </Box>
       ))}
-      <Box w="40px" h="40px" bottom={3} right={3} position="fixed">
+      <Box w="60px" h="60px" bottom={3} right={3} position="fixed">
         <Button
           boxShadow={'dark-lg'}
           colorScheme="whiteAlpha"
           size={'3xl'}
           borderRadius="sm"
           variant="solid"
-          w={'40px'}
-          h="40px"
+          w={'60px'}
+          h="60px"
         >
-          <ChevronDownIcon />
+          <ChevronDownIcon boxSize={'2em'} />
         </Button>
       </Box>
     </Box>
