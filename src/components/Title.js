@@ -1,17 +1,13 @@
-import logo from './title3.png'
+import React from 'react'
+import logo from '../img/title3.png'
 import {
   Text,
-  Center,
   Box,
   Image,
   Button,
   Stack,
   Checkbox,
   Divider,
-  FormControl,
-  FormLabel,
-  Switch,
-  FormHelperText,
   Tabs,
   TabList,
   Tab,
@@ -22,7 +18,7 @@ import {
 import { Search2Icon } from '@chakra-ui/icons'
 import './App.css'
 
-function App() {
+export const Title = ({ vocabulary }) => {
   return (
     <Box w={'100%'} textAlign={'center'}>
       <Box
@@ -44,14 +40,14 @@ function App() {
         border={'1px'}
         mb="3"
       >
+        <Text pl={'3'} fontSize={'2xl'} bgColor="gray" textAlign={'left'}>
+          {'>'}Continue
+        </Text>
         <Text fontWeight={'bold'} fontSize="xl">
           latest data: 08-03 08:47
         </Text>
         <Text fontSize={'md'}>Hard random 16/60</Text>
         <Text fontSize={'md'}>GWL1 GWL2 GWL3 </Text>
-        <Text pr={'5'} fontSize={'md'} bgColor="gray" textAlign={'right'}>
-          ...continue?
-        </Text>
       </Box>
       <Box
         margin={'auto'}
@@ -113,6 +109,13 @@ function App() {
         mt="4"
       >
         <Stack spacing={[4]} direction={['column']}>
+          {vocabulary.map((group, groupIndex) => (
+            <Checkbox size={'lg'} colorScheme="gray" key={groupIndex}>
+              {group.groupTag}
+              {' (' + group.groupContents.length + ')'}
+              {'  ' + group.groupInfo}
+            </Checkbox>
+          ))}
           <Checkbox size={'lg'} colorScheme="gray">
             GWL1
           </Checkbox>
@@ -137,24 +140,7 @@ function App() {
           />
         </InputGroup>
       </Box>
-      {/* <Flex>
-        <Box>
-          <Text fontFamily={'fantasy'} fontSize="7xl">
-            ≫
-          </Text>
-        </Box>
-        <Box>
-          <Text fontFamily={'fantasy'} color="yellow" fontSize="7xl">
-            TYPE
-          </Text>
-          <Text fontFamily={'fantasy'} fontSize="7xl" mt={-10}>
-            WORD
-          </Text>
-          <Text fontFamily={'fantasy'} fontSize="7xl" mt={-10}>
-            LEARNERS
-          </Text>
-        </Box>
-      </Flex> */}
+
       <Divider orientation="horizontal" maxW={'sm'} margin="auto" />
       <Text color={'gray.300'} fontSize="sm">
         ©2022- IgaTatApps
@@ -162,5 +148,3 @@ function App() {
     </Box>
   )
 }
-
-export default App
