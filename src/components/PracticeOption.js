@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/icons'
 import './App.css'
 
-export const Option = ({ time }) => {
+export const PracticeOption = ({ time }) => {
   const Element = document.documentElement
   const scrollToBottom = () => {
     window.scrollTo({
@@ -43,25 +43,59 @@ export const Option = ({ time }) => {
           <TimeIcon boxSize={'0.8em'} ml="2" />
           {time}
         </Text>
-        {Element.scrollHeight - Element.clientHeight < 40 ? (
+        {-Element.scrollTop - Element.clientHeight + Element.scrollHeight <
+        100 ? (
           <>すすむ</>
         ) : (
           <>したまで</>
         )}
       </Box>
-      <Box bottom={'12px'} right={'12px'} position="fixed">
-        <Button
-          boxShadow={'dark-lg'}
-          colorScheme="whiteAlpha"
-          borderRadius="sm"
-          variant="solid"
-          w={'60px'}
-          h="60px"
-          onClick={scrollToBottom}
-        >
-          <ChevronDownIcon boxSize={'3em'} />
-        </Button>
-      </Box>
+      {-Element.scrollTop - Element.clientHeight + Element.scrollHeight >
+      100 ? (
+        <>
+          <Box bottom={'12px'} right={'12px'} position="fixed">
+            <Button
+              boxShadow={'dark-lg'}
+              colorScheme="whiteAlpha"
+              borderRadius="sm"
+              variant="solid"
+              w={'60px'}
+              h="60px"
+              onClick={scrollToBottom}
+            >
+              <ChevronDownIcon boxSize={'3em'} />
+            </Button>
+          </Box>
+        </>
+      ) : (
+        <>
+          <Box
+            bottom={3}
+            right="80px"
+            w={'100px'}
+            textAlign="right"
+            color={'orange'}
+            fontSize="md"
+            position={'fixed'}
+            opacity="0.7"
+          >
+            NEXT
+          </Box>
+          <Box bottom={'12px'} right={'12px'} position="fixed">
+            <Button
+              boxShadow={'dark-lg'}
+              colorScheme="orange"
+              borderRadius="sm"
+              variant="solid"
+              w={'60px'}
+              h="60px"
+              onClick={scrollToBottom}
+            >
+              <ChevronDownIcon boxSize={'3em'} />
+            </Button>
+          </Box>
+        </>
+      )}
       <Box bottom={'88px'} right={'12px'} position="fixed">
         <Button
           boxShadow={'dark-lg'}
