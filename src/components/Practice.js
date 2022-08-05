@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, Box, Button } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Option } from './Option'
 
 export const Practice = ({ vocabulary }) => {
+  const [time,setTime] = useState(0);
+  setInterval(() => {
+    setTime(time + 1)
+  },1000)
   return (
     <Box maxW={'lg'} m="auto">
       <Text>ここから</Text>
@@ -16,7 +20,7 @@ export const Practice = ({ vocabulary }) => {
           <Text>　</Text>
         </Box>
       ))}
-      <Option />
+      <Option time={time} />
     </Box>
   )
 }

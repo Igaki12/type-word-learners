@@ -10,9 +10,18 @@ import {
 } from '@chakra-ui/icons'
 import './App.css'
 
-export const Option = ({}) => {
+export const Option = ({ time }) => {
+  const Element = document.documentElement
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: Element.scrollHeight - Element.clientHeight,
+      behavior: 'smooth',
+    })
+  }
   return (
     <>
+      {/* 最下部のゆとり */}
+      <Box h={'100px'}></Box>
       <Box w="40px" h="40px" top={'12px'} right={'12px'} position="fixed">
         <Button
           boxShadow={'dark-lg'}
@@ -23,7 +32,7 @@ export const Option = ({}) => {
           w={'40px'}
           h="40px"
         >
-          <SettingsIcon boxSize={'1em'} />
+          <SettingsIcon boxSize={'1.5em'} />
         </Button>
       </Box>
       <Box w="150px" h="40px" top={'20px'} right={'60px'} position="fixed">
@@ -32,8 +41,13 @@ export const Option = ({}) => {
           <EditIcon boxSize={'0.8em'} ml="2" />
           36/60
           <TimeIcon boxSize={'0.8em'} ml="2" />
-          18:16
+          {time}
         </Text>
+        {Element.scrollHeight - Element.clientHeight < 40 ? (
+          <>すすむ</>
+        ) : (
+          <>したまで</>
+        )}
       </Box>
       <Box bottom={'12px'} right={'12px'} position="fixed">
         <Button
@@ -43,8 +57,9 @@ export const Option = ({}) => {
           variant="solid"
           w={'60px'}
           h="60px"
+          onClick={scrollToBottom}
         >
-          <ChevronDownIcon boxSize={'2em'} />
+          <ChevronDownIcon boxSize={'3em'} />
         </Button>
       </Box>
       <Box bottom={'88px'} right={'12px'} position="fixed">
