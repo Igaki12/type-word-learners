@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, Box, Button } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
+import { Option } from './Option'
 
 export const Practice = ({ vocabulary }) => {
   return (
@@ -15,19 +16,7 @@ export const Practice = ({ vocabulary }) => {
           <Text>　</Text>
         </Box>
       ))}
-      <Box w="60px" h="60px" bottom={3} right={3} position="fixed">
-        <Button
-          boxShadow={'dark-lg'}
-          colorScheme="whiteAlpha"
-          size={'3xl'}
-          borderRadius="sm"
-          variant="solid"
-          w={'60px'}
-          h="60px"
-        >
-          <ChevronDownIcon boxSize={'2em'} />
-        </Button>
-      </Box>
+      <Option />
     </Box>
   )
 }
