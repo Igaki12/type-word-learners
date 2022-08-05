@@ -299,32 +299,54 @@ export const useVocabulary = () => {
       ],
     },
   ])
+  const addId = () => {
+    vocabulary.forEach((group, groupIndex) => {
+      let i = 0
+      group.reduce((prevContent, currentContent) => {
+        i += 1
+        let id =
+          [
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f',
+            'g',
+            'h',
+            'i',
+            'j',
+            'k',
+            'l',
+            'm',
+            'n',
+            'o',
+            'p',
+            'q',
+            'r',
+            's',
+            't',
+            'u',
+            'v',
+            'w',
+            'x',
+            'y',
+            'z',
+          ][groupIndex] + i
+        return [
+          ...prevContent,
+          {
+            word: currentContent.word,
+            sentence: currentContent.sentence,
+            id: id,
+          },
+        ]
+      }, [])
+    })
+  }
   const showVocabulary = () => {
     console.log(vocabulary.length)
     console.log(vocabulary[0])
-    console.log(
-      vocabulary.reduce((preVocabulary, currentGroup) => {
-        return [
-          ...preVocabulary,
-          {
-            groupTag: currentGroup.groupTag,
-            groupInfo: currentGroup.groupInfo,
-            groupContents: currentGroup.groupContents.filter(
-              (content, contentIndex) => {
-                return (
-                  content.word &&
-                  content.sentence &&
-                  content.sentence
-                    // .replace('.', '')
-                    // .replace('?', '')
-                    .split(/\s+/g).length > 3
-                )
-              },
-            ),
-          },
-        ]
-      }, [])[0],
-    )
     return vocabulary.reduce((preVocabulary, currentGroup) => {
       return [
         ...preVocabulary,
@@ -336,10 +358,8 @@ export const useVocabulary = () => {
               return (
                 content.word &&
                 content.sentence &&
-                content.sentence
-                  .replace('.', '')
-                  .replace('?', '')
-                  .split(/\s+/g).length > 3
+                content.sentence.replace('.', '').replace('?', '').split(/\s+/g)
+                  .length > 3
               )
             },
           ),
