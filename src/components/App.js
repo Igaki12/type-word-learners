@@ -17,6 +17,7 @@ function App() {
         <>
           <Title
           setText={setText}
+          text={text}
             status={status}
             vocabulary={vocabulary}
             changeMode={changeMode}

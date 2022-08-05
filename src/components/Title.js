@@ -26,6 +26,7 @@ export const Title = ({
   changeOrder,
   toggleVocabulary,
   setText,
+  text,
 }) => {
   return (
     <Box w={'100%'} textAlign={'center'}>
@@ -130,7 +131,10 @@ export const Title = ({
               size={'lg'}
               colorScheme="gray"
               key={groupIndex}
-              onChange={() => toggleVocabulary(groupIndex)}
+              onChange={() => {
+                toggleVocabulary(groupIndex)
+                setText('ここに検索候補が表示されます')
+              }}
             >
               {group.groupTag}
               {' (' + group.groupContents.length + ')'}
@@ -161,12 +165,13 @@ export const Title = ({
           />
         </InputGroup>
       </Box>
+      <Text>{text}</Text>
       {vocabulary.map((group, groupIndex) => {
         if (status.vocabulary.indexOf(groupIndex) === -1) {
           return
         }
-        group.groupContents.map((content, contentIndex) => (
-          <Box key={contentIndex} p="2">
+        return group.groupContents.map((content, contentIndex) => (
+          <Box key={contentIndex} p="2" maxW={'lg'} m="auto">
             <Text pl={3} fontSize={'xl'} fontWeight="bold" bgColor="gray.600">
               {'> ' + content.word}
             </Text>

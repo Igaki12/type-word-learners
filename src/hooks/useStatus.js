@@ -5,6 +5,7 @@ export const useStatus = () => {
     mode: 'title',
     order: 'ascend',
     vocabulary: [],
+    wordFilter:[],
   })
   const showStatus = () => {
     return status

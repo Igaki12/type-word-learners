@@ -37,12 +37,12 @@ export const PracticeOption = ({ time }) => {
       </Box>
       <Box w="150px" h="40px" top={'20px'} right={'60px'} position="fixed">
         <Progress colorScheme="gray" size="xs" value={20} />
-        <Text textAlign={'right'} color="whiteAlpha.600">
-          <EditIcon boxSize={'0.8em'} ml="2" />
+        <Box textAlign={'right'} color="whiteAlpha.600">
+          <EditIcon boxSize={'0.8em'} ml="2" mr={1} />
           36/60
-          <TimeIcon boxSize={'0.8em'} ml="2" />
+          <TimeIcon boxSize={'0.8em'} ml="2" mr={1} />
           {time}
-        </Text>
+        </Box>
       </Box>
       {-Element.scrollTop - Element.clientHeight + Element.scrollHeight >
       100 ? (
