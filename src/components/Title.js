@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '../img/title3.png'
 import {
   Text,
@@ -17,8 +17,16 @@ import {
 } from '@chakra-ui/react'
 import { Search2Icon } from '@chakra-ui/icons'
 import './App.css'
+import { TitleOption } from './TitleOption'
 
-export const Title = ({ vocabulary }) => {
+export const Title = ({
+  status,
+  vocabulary,
+  changeMode,
+  changeOrder,
+  toggleVocabulary,
+  setText,
+}) => {
   return (
     <Box w={'100%'} textAlign={'center'}>
       <Box
@@ -29,7 +37,7 @@ export const Title = ({ vocabulary }) => {
         mt={10}
         mb="10"
       >
-        <Image src={logo} alt="Dan Abramov" />
+        <Image src={logo} alt="Title Logo" />
       </Box>
       <Box
         margin={'auto'}
@@ -65,6 +73,10 @@ export const Title = ({ vocabulary }) => {
           pl="1"
           borderRadius={'sm'}
           autoFocus
+          onClick={() => {
+            changeMode('practice')
+            setText('練習開始')
+          }}
         >
           {'>'}Practice
         </Button>
@@ -90,8 +102,12 @@ export const Title = ({ vocabulary }) => {
       <Box margin={'auto'} maxW={'sm'} textAlign={'center'}>
         <Tabs variant="soft-rounded" colorScheme="gray" m={1}>
           <TabList>
-            <Tab fontSize="lg">ascend</Tab>
-            <Tab fontSize="lg">random</Tab>
+            <Tab fontSize="lg" onClick={() => changeOrder('ascend')}>
+              ascend
+            </Tab>
+            <Tab fontSize="lg" onClick={() => changeOrder('random')}>
+              random
+            </Tab>
           </TabList>
         </Tabs>
       </Box>
@@ -110,7 +126,12 @@ export const Title = ({ vocabulary }) => {
       >
         <Stack spacing={[4]} direction={['column']}>
           {vocabulary.map((group, groupIndex) => (
-            <Checkbox size={'lg'} colorScheme="gray" key={groupIndex}>
+            <Checkbox
+              size={'lg'}
+              colorScheme="gray"
+              key={groupIndex}
+              onChange={() => toggleVocabulary(groupIndex)}
+            >
               {group.groupTag}
               {' (' + group.groupContents.length + ')'}
               {'  ' + group.groupInfo}
@@ -140,11 +161,25 @@ export const Title = ({ vocabulary }) => {
           />
         </InputGroup>
       </Box>
-
+      {vocabulary.map((group, groupIndex) => {
+        if (status.vocabulary.indexOf(groupIndex) === -1) {
+          return
+        }
+        group.groupContents.map((content, contentIndex) => (
+          <Box key={contentIndex} p="2">
+            <Text pl={3} fontSize={'xl'} fontWeight="bold" bgColor="gray.600">
+              {'> ' + content.word}
+            </Text>
+            <Text pl={3}>{'> ' + content.sentence}</Text>
+            <Text>　</Text>
+          </Box>
+        ))
+      })}
       <Divider orientation="horizontal" maxW={'sm'} margin="auto" />
       <Text color={'gray.300'} fontSize="sm">
         ©2022- IgaTatApps
       </Text>
+      <TitleOption />
     </Box>
   )
 }

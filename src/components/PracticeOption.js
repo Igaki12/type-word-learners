@@ -43,12 +43,6 @@ export const PracticeOption = ({ time }) => {
           <TimeIcon boxSize={'0.8em'} ml="2" />
           {time}
         </Text>
-        {-Element.scrollTop - Element.clientHeight + Element.scrollHeight <
-        100 ? (
-          <>すすむ</>
-        ) : (
-          <>したまで</>
-        )}
       </Box>
       {-Element.scrollTop - Element.clientHeight + Element.scrollHeight >
       100 ? (
@@ -69,18 +63,6 @@ export const PracticeOption = ({ time }) => {
         </>
       ) : (
         <>
-          <Box
-            bottom={3}
-            right="80px"
-            w={'100px'}
-            textAlign="right"
-            color={'orange'}
-            fontSize="md"
-            position={'fixed'}
-            opacity="0.7"
-          >
-            NEXT
-          </Box>
           <Box bottom={'12px'} right={'12px'} position="fixed">
             <Button
               boxShadow={'dark-lg'}
