@@ -17,7 +17,8 @@ function App() {
   } = useStatus()
   let status = showStatus()
   const vocabulary = showVocabulary()
-  const { selectQuestion } = useHistory()
+  const { showHistory, selectQuestion, nextQuestion } = useHistory()
+  const history = showHistory()
   const [text, setText] = useState()
   return (
     <>
@@ -33,6 +34,7 @@ function App() {
             changeOrder={changeOrder}
             toggleVocabulary={toggleVocabulary}
             selectQuestion={selectQuestion}
+            nextQuestion={nextQuestion}
             addWordFilter={addWordFilter}
             deleteWordFilter={deleteWordFilter}
           />
@@ -42,7 +44,7 @@ function App() {
       )}
       {status.mode === 'practice' ? (
         <>
-          <Practice vocabulary={vocabulary} />
+          <Practice vocabulary={vocabulary} history={history} />
         </>
       ) : (
         <></>

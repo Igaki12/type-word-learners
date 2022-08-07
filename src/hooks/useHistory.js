@@ -4,10 +4,36 @@ export const useHistory = () => {
     {
       startTime: '',
       asked: [],
-      asking: [],
+      asking: '',
       remaining: [],
     },
   ])
+  const showHistory = () => {
+    return [...history]
+  }
+  const nextQuestion = (status) => {
+    let newHistory = [...history][history.length - 1]
+    if (newHistory.asking !== '') {
+      newHistory.asked.push(newHistory.asking)
+      newHistory.asking = ''
+    }
+    if (newHistory.remaining.length < 1) {
+      return
+    }
+    if (status.order === 'ascend') {
+      console.log(newHistory.remaining.sort()[0])
+      newHistory.asking = newHistory.remaining.sort()[0]
+      newHistory.remaining.shift()
+    } else if (status.order === 'random') {
+      let ranNum = Math.floor(Math.random() * newHistory.remaining.length)
+      console.log('ranNum:' + ranNum)
+      console.log(newHistory.remaining[ranNum])
+      newHistory.asking = newHistory.remaining[ranNum]
+      newHistory.remaining.splice(ranNum, 1)
+    }
+    setHistory([...history,newHistory])
+    console.log(newHistory)
+  }
   const selectQuestion = (status, vocabulary) => {
     let newHistory = [...history][history.length - 1]
     newHistory.startTime = new Date()
@@ -19,12 +45,12 @@ export const useHistory = () => {
         return [...prevGroup]
       }
       console.log(currentGroup)
-      let i = -1
+      let i = 0
       let currentId = currentGroup.groupContents.reduce(
         (prevContent, currentContent) => {
           i += 1
           // 検索機能はここに追加
-          if (status.wordFilter) {
+          if (status.wordFilter.length > 0) {
             if (
               status.wordFilter.every((word) => {
                 return (
@@ -65,20 +91,21 @@ export const useHistory = () => {
               'x',
               'y',
               'z',
-            ][groupId] + i,
+            ][groupId] + ('000' + i).slice(-3),
           ]
         },
         [],
       )
       console.log('currentId:' + currentId)
-      return [...prevGroup, currentId]
+      return [...prevGroup, ...currentId]
     }, [])
-    console.log('remaining id:' + remaining)
+    console.log(remaining)
     newHistory.remaining = remaining
     newHistory.asked = []
     newHistory.asking = []
-    setHistory(newHistory)
+    setHistory([...history,newHistory])
     console.log('selected question:')
   }
-  return { selectQuestion }
+
+  return { showHistory,selectQuestion, nextQuestion }
 }

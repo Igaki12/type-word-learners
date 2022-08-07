@@ -36,6 +36,7 @@ export const Title = ({
   setText,
   text,
   selectQuestion,
+  nextQuestion,
   addWordFilter,
   deleteWordFilter,
 }) => {
@@ -92,6 +93,7 @@ export const Title = ({
             changeMode('practice')
             setText('練習開始')
             selectQuestion(status, vocabulary)
+            nextQuestion(status,vocabulary)
           }}
         >
           {'>'}Practice
@@ -266,6 +268,7 @@ export const Title = ({
                 onClick={() => {
                   deleteWordFilter(i)
                   setExpectTag('')
+                  setText('<' + word + '> tag was deleted.')
                 }}
               />
             </Tag>
@@ -315,6 +318,7 @@ export const Title = ({
                     return [
                       ...prevContent,
                       {
+                        id: currentContent.id,
                         word: status.wordFilter.reduce(
                           (prevWF, currentWF) => {
                             return prevWF.reduce((prevWord, currentWord) => {
@@ -350,6 +354,7 @@ export const Title = ({
                     return [
                       ...prevContent,
                       {
+                        id:currentContent.id,
                         word: [currentContent.word],
                         sentence: [currentContent.sentence],
                       },
@@ -378,21 +383,39 @@ export const Title = ({
                 maxW={'lg'}
                 m="auto"
               >
-                <Flex bgColor="gray.600">
-                  <Text
-                    pl={3}
-                    fontSize={'xl'}
-                    fontWeight="bold"
-                    textAlign={'left'}
-                  >
-                    {'> ' + content.word}
-                  </Text>
+                <Flex bgColor="gray.600" pl={3}>
+                  {'> '}
+                  {content.word.map((w, wordIndex) => (
+                    <>
+                      {status.wordFilter.indexOf(w) === -1 ? (
+                        <Text
+                          fontSize={'xl'}
+                          fontWeight="bold"
+                          textAlign={'left'}
+                          key={wordIndex + 'WF'}
+                        >
+                          {w}
+                        </Text>
+                      ) : (
+                        <Text
+                          fontSize={'xl'}
+                          fontWeight="bold"
+                          textAlign={'left'}
+                          color="orange.200"
+                          key={wordIndex + 'WF'}
+                        >
+                          {w}
+                        </Text>
+                      )}
+                    </>
+                  ))}
+
                   <Spacer />
                   <Text color={'gray.500'} mt="auto" mb={'auto'} mr="2">
-                    {`${group.groupTag} (${contentIndex + 1}) `}
+                    {`${group.groupTag} (${content.id.slice(1)}) `}
                   </Text>
                   <IconButton variant={'ghost'} size="sm" borderRadius={'none'}>
-                    <CloseIcon color={'red.200'} size="md" />
+                    <CloseIcon color={'red.100'} size="md" />
                   </IconButton>
                 </Flex>
                 <Flex textAlign={'left'} pl="3">

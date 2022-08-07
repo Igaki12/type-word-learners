@@ -299,69 +299,68 @@ export const useVocabulary = () => {
       ],
     },
   ])
-  const addId = () => {
-    vocabulary.forEach((group, groupIndex) => {
-      let i = 0
-      group.reduce((prevContent, currentContent) => {
-        i += 1
-        let id =
-          [
-            'a',
-            'b',
-            'c',
-            'd',
-            'e',
-            'f',
-            'g',
-            'h',
-            'i',
-            'j',
-            'k',
-            'l',
-            'm',
-            'n',
-            'o',
-            'p',
-            'q',
-            'r',
-            's',
-            't',
-            'u',
-            'v',
-            'w',
-            'x',
-            'y',
-            'z',
-          ][groupIndex] + i
-        return [
-          ...prevContent,
-          {
-            word: currentContent.word,
-            sentence: currentContent.sentence,
-            id: id,
-          },
-        ]
-      }, [])
-    })
-  }
   const showVocabulary = () => {
     console.log(vocabulary.length)
-    console.log(vocabulary[0])
+    let groupId = -1
     return vocabulary.reduce((preVocabulary, currentGroup) => {
+      groupId += 1
+      let contentId = 0
       return [
         ...preVocabulary,
         {
           groupTag: currentGroup.groupTag,
           groupInfo: currentGroup.groupInfo,
-          groupContents: currentGroup.groupContents.filter(
-            (content, contentIndex) => {
-              return (
-                content.word &&
-                content.sentence &&
-                content.sentence.replace('.', '').replace('?', '').split(/\s+/g)
-                  .length > 3
-              )
+          groupContents: currentGroup.groupContents.reduce(
+            (prevContent, currentContent) => {
+              contentId += 1
+              if (
+                currentContent.word &&
+                currentContent.sentence &&
+                currentContent.sentence
+                  .replace('.', '')
+                  .replace('?', '')
+                  .split(/\s+/g).length > 3
+              ) {
+                return [
+                  ...prevContent,
+                  {
+                    word: currentContent.word,
+                    sentence: currentContent.sentence,
+                    id:
+                      [
+                        'a',
+                        'b',
+                        'c',
+                        'd',
+                        'e',
+                        'f',
+                        'g',
+                        'h',
+                        'i',
+                        'j',
+                        'k',
+                        'l',
+                        'm',
+                        'n',
+                        'o',
+                        'p',
+                        'q',
+                        'r',
+                        's',
+                        't',
+                        'u',
+                        'v',
+                        'w',
+                        'x',
+                        'y',
+                        'z',
+                      ][groupId] + ('000' + contentId).slice(-3),
+                  },
+                ]
+              }
+              return [...prevContent]
             },
+            [],
           ),
         },
       ]
