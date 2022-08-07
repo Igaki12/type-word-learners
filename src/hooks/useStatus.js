@@ -5,7 +5,8 @@ export const useStatus = () => {
     mode: 'title',
     order: 'ascend',
     vocabulary: [],
-    wordFilter:[],
+    wordFilter: [],
+    excludedId: [],
   })
   const showStatus = () => {
     return status
@@ -32,5 +33,26 @@ export const useStatus = () => {
     setStatus(newStatus)
     console.log('vocabulary changed:' + status.vocabulary)
   }
-  return { status,showStatus, changeMode, changeOrder, toggleVocabulary }
+  const addWordFilter = (word) => {
+    if (word === '') return
+    let newStatus = status
+    newStatus.wordFilter.unshift(word)
+    setStatus(newStatus)
+    console.log('addWordFilter:' + status.wordFilter)
+  }
+  const deleteWordFilter = (index) => {
+    let newStatus = status
+    newStatus.wordFilter.splice(index, 1)
+    setStatus(newStatus)
+    console.log('deleteWordFilter:' + status.wordFilter)
+  }
+  return {
+    status,
+    showStatus,
+    changeMode,
+    changeOrder,
+    toggleVocabulary,
+    addWordFilter,
+    deleteWordFilter,
+  }
 }

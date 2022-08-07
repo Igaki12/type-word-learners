@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+.redTxt{
+  color: rgb(255, 209, 119);
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

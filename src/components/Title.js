@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import logo from '../img/title3.png'
 import {
   Text,
@@ -14,8 +14,16 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
+  VStack,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  Spacer,
+  Flex,
+  IconButton,
+  Collapse,
 } from '@chakra-ui/react'
-import { Search2Icon } from '@chakra-ui/icons'
+import { CloseIcon, Search2Icon } from '@chakra-ui/icons'
 import './App.css'
 import { TitleOption } from './TitleOption'
 
@@ -27,7 +35,13 @@ export const Title = ({
   toggleVocabulary,
   setText,
   text,
+  selectQuestion,
+  addWordFilter,
+  deleteWordFilter,
 }) => {
+  const [expectTag, setExpectTag] = useState()
+  // const [resultText, setResultText] = useState()
+  const searchWord = useRef('')
   return (
     <Box w={'100%'} textAlign={'center'}>
       <Box
@@ -77,6 +91,7 @@ export const Title = ({
           onClick={() => {
             changeMode('practice')
             setText('練習開始')
+            selectQuestion(status, vocabulary)
           }}
         >
           {'>'}Practice
@@ -162,24 +177,250 @@ export const Title = ({
             type="text"
             placeholder="Input keyword to search"
             colorScheme={'blackAlpha'}
+            ref={searchWord}
+            onChange={() => {
+              setExpectTag(searchWord.current.value)
+            }}
+            onBlur={() => {
+              setExpectTag('')
+              addWordFilter(searchWord.current.value)
+              searchWord.current.value = ''
+            }}
+            // onFocus={setExpectTag('ここに結果が表示されます')}
           />
         </InputGroup>
       </Box>
+      {expectTag ? (
+        <>
+          <Tag
+            size="lg"
+            borderRadius="sm"
+            variant="outline"
+            colorScheme="whiteAlpha"
+            w={'sm'}
+            fontSize="xl"
+            mb={1}
+          >
+            <Search2Icon color="gray.500" />
+            <TagLabel ml={3}>"{expectTag}"</TagLabel>
+            <Spacer />
+            {vocabulary.reduce((prevGroup, currentGroup) => {
+              return (
+                prevGroup +
+                currentGroup.groupContents.reduce(
+                  (prevContent, currentContent) => {
+                    if (
+                      currentContent.word.indexOf(expectTag) === -1 &&
+                      currentContent.sentence.indexOf(expectTag) === -1
+                    ) {
+                      return prevContent
+                    }
+                    return prevContent + 1
+                  },
+                  0,
+                )
+              )
+            }, 0)}
+            　Hits
+          </Tag>
+        </>
+      ) : (
+        <></>
+      )}
+
+      <Box margin={'auto'} maxW="sm" mb={4}>
+        <VStack spacing={1}>
+          {status.wordFilter.map((word, i) => (
+            <Tag
+              size="lg"
+              key={i}
+              borderRadius="sm"
+              variant="solid"
+              colorScheme="whiteAlpha"
+              w={'sm'}
+              fontSize="xl"
+            >
+              <Search2Icon color="gray.300" />
+              <TagLabel ml={3}>
+                {i > 0 ? '+ ' : ''}"{word}"
+              </TagLabel>
+              <Spacer />
+              {vocabulary.reduce((prevGroup, currentGroup) => {
+                return (
+                  prevGroup +
+                  currentGroup.groupContents.reduce(
+                    (prevContent, currentContent) => {
+                      if (
+                        currentContent.word.indexOf(word) === -1 &&
+                        currentContent.sentence.indexOf(word) === -1
+                      ) {
+                        return prevContent
+                      }
+                      return prevContent + 1
+                    },
+                    0,
+                  )
+                )
+              }, 0)}
+              <TagCloseButton
+                onClick={() => {
+                  deleteWordFilter(i)
+                  setExpectTag('')
+                }}
+              />
+            </Tag>
+          ))}
+        </VStack>
+      </Box>
       <Text>{text}</Text>
-      {vocabulary.map((group, groupIndex) => {
-        if (status.vocabulary.indexOf(groupIndex) === -1) {
-          return
-        }
-        return group.groupContents.map((content, contentIndex) => (
-          <Box key={contentIndex} p="2" maxW={'lg'} m="auto">
-            <Text pl={3} fontSize={'xl'} fontWeight="bold" bgColor="gray.600">
-              {'> ' + content.word}
-            </Text>
-            <Text pl={3}>{'> ' + content.sentence}</Text>
-            <Text>　</Text>
-          </Box>
-        ))
-      })}
+      {vocabulary
+        .reduce((prevGroup, currentGroup) => {
+          return [
+            ...prevGroup,
+            {
+              groupTag: currentGroup.groupTag,
+              groupInfo: currentGroup.groupInfo,
+              groupContents: currentGroup.groupContents.reduce(
+                (prevContent, currentContent) => {
+                  if (status.wordFilter.length > 0) {
+                    if (
+                      status.wordFilter.every((word) => {
+                        return (
+                          currentContent.word.indexOf(word) === -1 &&
+                          currentContent.sentence.indexOf(word) === -1
+                        )
+                      })
+                    ) {
+                      console.log(status.wordFilter.length)
+                      return [...prevContent]
+                    }
+                    console.log(
+                      status.wordFilter.reduce(
+                        (prevWF, currentWF) => {
+                          return prevWF.reduce(
+                            (prevSentence, currentSentence) => {
+                              return [
+                                ...prevSentence,
+                                ...currentSentence.split(
+                                  new RegExp(`(${currentWF})`, 'g'),
+                                ),
+                              ]
+                            },
+                            [],
+                          )
+                        },
+                        [currentContent.sentence],
+                      ),
+                    )
+                    return [
+                      ...prevContent,
+                      {
+                        word: status.wordFilter.reduce(
+                          (prevWF, currentWF) => {
+                            return prevWF.reduce((prevWord, currentWord) => {
+                              return [
+                                ...prevWord,
+                                ...currentWord.split(
+                                  new RegExp(`(${currentWF})`, 'ig'),
+                                ),
+                              ]
+                            }, [])
+                          },
+                          [currentContent.word],
+                        ),
+                        sentence: status.wordFilter.reduce(
+                          (prevWF, currentWF) => {
+                            return prevWF.reduce(
+                              (prevSentence, currentSentence) => {
+                                return [
+                                  ...prevSentence,
+                                  ...currentSentence.split(
+                                    new RegExp(`(${currentWF})`, 'ig'),
+                                  ),
+                                ]
+                              },
+                              [],
+                            )
+                          },
+                          [currentContent.sentence],
+                        ),
+                      },
+                    ]
+                  } else {
+                    return [
+                      ...prevContent,
+                      {
+                        word: [currentContent.word],
+                        sentence: [currentContent.sentence],
+                      },
+                    ]
+                  }
+                },
+                [],
+              ),
+            },
+          ]
+        }, [])
+        .map((group, groupIndex) => {
+          if (status.vocabulary.indexOf(groupIndex) === -1) {
+            return <></>
+          }
+          return group.groupContents.map((content, contentIndex) => (
+            <Collapse
+              key={'collapseId' + groupIndex + ',' + contentIndex}
+              in={true}
+              animateOpacity
+              id={'collapseId' + groupIndex + ',' + contentIndex}
+            >
+              <Box
+                key={groupIndex + ',' + contentIndex}
+                p="2"
+                maxW={'lg'}
+                m="auto"
+              >
+                <Flex bgColor="gray.600">
+                  <Text
+                    pl={3}
+                    fontSize={'xl'}
+                    fontWeight="bold"
+                    textAlign={'left'}
+                  >
+                    {'> ' + content.word}
+                  </Text>
+                  <Spacer />
+                  <Text color={'gray.500'} mt="auto" mb={'auto'} mr="2">
+                    {`${group.groupTag} (${contentIndex + 1}) `}
+                  </Text>
+                  <IconButton variant={'ghost'} size="sm" borderRadius={'none'}>
+                    <CloseIcon color={'red.200'} size="md" />
+                  </IconButton>
+                </Flex>
+                <Flex textAlign={'left'} pl="3">
+                  <Text pr={1}>{'> '}</Text>
+                  <Text>
+                    {content.sentence.map((s, sentenceIndex) => (
+                      <>
+                        {status.wordFilter.indexOf(s) === -1 ? (
+                          <span key={sentenceIndex + 'CST'} pr="1">
+                            {s}
+                          </span>
+                        ) : (
+                          <span
+                            key={sentenceIndex + 'CST'}
+                            className="redTxt"
+                            pr={1}
+                          >
+                            {s}
+                          </span>
+                        )}
+                      </>
+                    ))}
+                  </Text>
+                </Flex>
+              </Box>
+            </Collapse>
+          ))
+        })}
       <Divider orientation="horizontal" maxW={'sm'} margin="auto" />
       <Text color={'gray.300'} fontSize="sm">
         ©2022- IgaTatApps
