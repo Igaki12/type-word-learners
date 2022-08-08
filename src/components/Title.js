@@ -418,7 +418,7 @@ export const Title = ({
                     <CloseIcon color={'red.100'} size="md" />
                   </IconButton>
                 </Flex>
-                <Flex textAlign={'left'} pl="3">
+                <Flex textAlign={'left'} pl="3" fontSize={"lg"}>
                   <Text pr={1}>{'> '}</Text>
                   <Text>
                     {content.sentence.map((s, sentenceIndex) => (

@@ -123,7 +123,7 @@ export const Practice = ({ vocabulary, history, nextQuestion, status }) => {
                   <RepeatIcon boxSize={'1.3em'} color="black" />
                 </IconButton>
               </Flex>
-              <Flex mb={5}>
+              <Flex mb={5} fontSize="lg">
                 <Text ml={'5px'} pl="3">
                   {'>'}
                 </Text>
@@ -162,7 +162,7 @@ export const Practice = ({ vocabulary, history, nextQuestion, status }) => {
           </IconButton>
         </Flex>
         {history[history.length - 1].isAnswered === 1 ? (
-          <Flex mb={5}>
+          <Flex mb={5} fontSize="lg">
             <Text ml={'5px'} pl="3">
               {'>'}
             </Text>
@@ -174,7 +174,7 @@ export const Practice = ({ vocabulary, history, nextQuestion, status }) => {
             </Text>
           </Flex>
         ) : (
-          <Flex mb={5}>
+          <Flex mb={5} fontSize="lg">
             <Text ml={'5px'} pl="3" className="pendular">
               {'>'}
             </Text>
