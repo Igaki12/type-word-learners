@@ -93,7 +93,7 @@ export const Title = ({
             changeMode('practice')
             setText('練習開始')
             selectQuestion(status, vocabulary)
-            nextQuestion(status,vocabulary)
+            nextQuestion(status, vocabulary)
           }}
         >
           {'>'}Practice
@@ -354,7 +354,7 @@ export const Title = ({
                     return [
                       ...prevContent,
                       {
-                        id:currentContent.id,
+                        id: currentContent.id,
                         word: [currentContent.word],
                         sentence: [currentContent.sentence],
                       },
@@ -383,7 +383,7 @@ export const Title = ({
                 maxW={'lg'}
                 m="auto"
               >
-                <Flex bgColor="gray.600" pl={3}>
+                <Flex bgColor="gray.600" pl={3} fontSize="xl">
                   {'> '}
                   {content.word.map((w, wordIndex) => (
                     <>

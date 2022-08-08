@@ -94,7 +94,7 @@ export const Practice = ({ vocabulary, history, nextQuestion, status }) => {
   //   console.log(startTime.getTime())
   // }, 1000)
   return (
-    <Box maxW={'lg'} m="auto">
+    <Box maxW={'lg'} m="auto" mt={10}>
       {history[history.length - 1].asked.length === 0 ? (
         <></>
       ) : (
