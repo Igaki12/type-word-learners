@@ -44,7 +44,12 @@ function App() {
       )}
       {status.mode === 'practice' ? (
         <>
-          <Practice vocabulary={vocabulary} history={history} />
+          <Practice
+            vocabulary={vocabulary}
+            history={history}
+            nextQuestion={nextQuestion}
+            status={status}
+          />
         </>
       ) : (
         <></>

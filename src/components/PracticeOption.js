@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Box, Text, Spacer, Progress } from '@chakra-ui/react'
 import {
   CheckIcon,
@@ -10,7 +10,14 @@ import {
 } from '@chakra-ui/icons'
 import './App.css'
 
-export const PracticeOption = ({ time }) => {
+export const PracticeOption = ({
+  time,
+  nextQuestion,
+  status,
+  history,
+  score,
+  setScore,
+}) => {
   const Element = document.documentElement
   const scrollToBottom = () => {
     window.scrollTo({
@@ -18,6 +25,7 @@ export const PracticeOption = ({ time }) => {
       behavior: 'smooth',
     })
   }
+
   return (
     <>
       {/* 最下部のゆとり */}
@@ -39,7 +47,10 @@ export const PracticeOption = ({ time }) => {
         <Progress colorScheme="gray" size="xs" value={20} />
         <Box textAlign={'right'} color="whiteAlpha.600">
           <EditIcon boxSize={'0.8em'} ml="2" mr={1} />
-          36/60
+          {score}/
+          {history[history.length - 1].remaining.length +
+            history[history.length - 1].asked.length +
+            1}
           <TimeIcon boxSize={'0.8em'} ml="2" mr={1} />
           {time}
         </Box>
@@ -71,7 +82,11 @@ export const PracticeOption = ({ time }) => {
               variant="solid"
               w={'60px'}
               h="60px"
-              onClick={scrollToBottom}
+              onClick={() => {
+                nextQuestion(status)
+                scrollToBottom()
+                setScore(score + history[history.length - 1].isAnswered)
+              }}
             >
               <ChevronDownIcon boxSize={'3em'} />
             </Button>

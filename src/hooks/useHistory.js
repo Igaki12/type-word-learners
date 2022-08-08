@@ -6,12 +6,18 @@ export const useHistory = () => {
       asked: [],
       asking: '',
       remaining: [],
+      isAnswered: 1,
     },
   ])
   const showHistory = () => {
     return [...history]
   }
   const nextQuestion = (status) => {
+    if (history[history.length - 1].isAnswered === 0) {
+      history[history.length - 1].isAnswered = 1
+      return
+    }
+    history[history.length - 1].isAnswered = 0
     let newHistory = [...history][history.length - 1]
     if (newHistory.asking !== '') {
       newHistory.asked.push(newHistory.asking)
@@ -31,7 +37,7 @@ export const useHistory = () => {
       newHistory.asking = newHistory.remaining[ranNum]
       newHistory.remaining.splice(ranNum, 1)
     }
-    setHistory([...history,newHistory])
+    setHistory([...history, newHistory])
     console.log(newHistory)
   }
   const selectQuestion = (status, vocabulary) => {
@@ -102,10 +108,10 @@ export const useHistory = () => {
     console.log(remaining)
     newHistory.remaining = remaining
     newHistory.asked = []
-    newHistory.asking = []
-    setHistory([...history,newHistory])
+    newHistory.asking = ""
+    setHistory([...history, newHistory])
     console.log('selected question:')
   }
 
-  return { showHistory,selectQuestion, nextQuestion }
+  return { showHistory, selectQuestion, nextQuestion }
 }

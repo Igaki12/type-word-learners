@@ -13,13 +13,79 @@ import { PracticeOption } from './PracticeOption'
 import './App.css'
 import { useMemo } from 'react'
 
-export const Practice = ({ vocabulary, history }) => {
+export const Practice = ({ vocabulary, history, nextQuestion, status }) => {
   const [startTime, setStartTime] = useState(new Date().getTime() / 1000)
   const [time, setTime] = useState(0)
+  const [score, setScore] = useState(1)
   setInterval(
     () => setTime(Math.floor(new Date().getTime() / 1000 - startTime)),
     1000,
   )
+  const groupBox = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z',
+  ]
+  const askingGroupIndex = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z',
+  ].indexOf(history[history.length - 1].asking.slice(0, 1))
+  const askingContentIndex =
+    parseInt(history[history.length - 1].asking.slice(1)) - 1
+  console.log(
+    'askingGroupIndex/askingContentIndex:' +
+      askingGroupIndex +
+      '/' +
+      askingContentIndex,
+  )
+  console.log(history[history.length - 1].asked)
   // const time = useMemo(() => )
   // setInterval(() => {
   //   let nowTime = new Date()
@@ -29,85 +95,100 @@ export const Practice = ({ vocabulary, history }) => {
   // }, 1000)
   return (
     <Box maxW={'lg'} m="auto">
-      <Text>ここから</Text>
-      {vocabulary
-        .reduce((prevGroup, currentGroup) => {
-          return [
-            ...prevGroup,
-            ...currentGroup.groupContents.reduce(
-              (prevContent, currentContent) => {
-                if (currentContent.id !== history[history.length - 1].asking) {
-                  return prevContent
-                }
-                return {
-                  tag: currentGroup.groupTag,
-                  info: currentGroup.groupInfo,
-                  id: currentContent.id,
-                  word: currentContent.word,
-                  sentence: currentContent.sentence,
-                }
-              },
-              [],
-            ),
-          ]
-        }, [])
-        .map((content) => (
-          <Collapse key={"askingQuestion"} p="2" in={true}>
-            <Flex bgColor={'gray.600'}>
-              <Text pl={3} fontSize={'xl'} fontWeight="bold">
-                {'> ' + content.word}
-              </Text>
-              <Spacer />
-              <Text color={'gray.500'} mt="auto" mb={'auto'} mr="2">
-                {content.tag + ' (' + content.id.slice(-3) + ') '}
-              </Text>
-              <IconButton
-                textShadow={'xl'}
-                borderRadius={'sm'}
-                size={'sm'}
-                bgColor="none"
-                variant={'ghost'}
-              >
-                <RepeatIcon boxSize={'1.3em'} color="black" />
-              </IconButton>
-            </Flex>
-            <Flex mb={5}>
-              <Text ml={'5px'} pl="3" className="pendular">
-                {'>'}
-              </Text>
-              <Text pl={2}>{content.sentence}</Text>
-            </Flex>
-          </Collapse>
-        ))}
-      {vocabulary[0].groupContents.map((content, index) => (
-        <Collapse key={index} p="2" in={true}>
-          <Flex bgColor={'gray.600'}>
-            <Text pl={3} fontSize={'xl'} fontWeight="bold">
-              {'> ' + content.word}
+      {history[history.length - 1].asked.length === 0 ? (
+        <></>
+      ) : (
+        <>
+          {history[history.length - 1].asked.map((askedId) => (
+            <Collapse p="2" in={true}>
+              <Flex bgColor={'gray.600'}>
+                <Text pl={3} fontSize={'xl'} fontWeight="bold">
+                  {'> ' +
+                    vocabulary[groupBox.indexOf(askedId.slice(0, 1))]
+                      .groupContents[parseInt(askedId.slice(1)) - 1].word}
+                </Text>
+                <Spacer />
+                <Text color={'gray.500'} mt="auto" mb={'auto'} mr="2">
+                  {`${
+                    vocabulary[groupBox.indexOf(askedId.slice(0, 1))].groupTag
+                  } (${parseInt(askedId.slice(1)) - 1 + 1}) `}
+                </Text>
+                <IconButton
+                  textShadow={'xl'}
+                  borderRadius={'sm'}
+                  size={'sm'}
+                  bgColor="none"
+                  variant={'ghost'}
+                >
+                  <RepeatIcon boxSize={'1.3em'} color="black" />
+                </IconButton>
+              </Flex>
+              <Flex mb={5}>
+                <Text ml={'5px'} pl="3">
+                  {'>'}
+                </Text>
+                <Text pl={2}>
+                  {
+                    vocabulary[groupBox.indexOf(askedId.slice(0, 1))]
+                      .groupContents[parseInt(askedId.slice(1)) - 1].sentence
+                  }
+                </Text>
+              </Flex>
+            </Collapse>
+          ))}
+        </>
+      )}
+      <Collapse p="2" in={true}>
+        <Flex bgColor={'gray.600'}>
+          <Text pl={3} fontSize={'xl'} fontWeight="bold">
+            {'> ' +
+              vocabulary[askingGroupIndex].groupContents[askingContentIndex]
+                .word}
+          </Text>
+          <Spacer />
+          <Text color={'gray.500'} mt="auto" mb={'auto'} mr="2">
+            {`${vocabulary[askingGroupIndex].groupTag} (${
+              askingContentIndex + 1
+            }) `}
+          </Text>
+          <IconButton
+            textShadow={'xl'}
+            borderRadius={'sm'}
+            size={'sm'}
+            bgColor="none"
+            variant={'ghost'}
+          >
+            <RepeatIcon boxSize={'1.3em'} color="black" />
+          </IconButton>
+        </Flex>
+        {history[history.length - 1].isAnswered === 1 ? (
+          <Flex mb={5}>
+            <Text ml={'5px'} pl="3">
+              {'>'}
             </Text>
-            <Spacer />
-            <Text color={'gray.500'} mt="auto" mb={'auto'} mr="2">
-              {vocabulary[0].groupTag + ' (' + index + ') '}
+            <Text pl={2}>
+              {
+                vocabulary[askingGroupIndex].groupContents[askingContentIndex]
+                  .sentence
+              }
             </Text>
-            <IconButton
-              textShadow={'xl'}
-              borderRadius={'sm'}
-              size={'sm'}
-              bgColor="none"
-              variant={'ghost'}
-            >
-              <RepeatIcon boxSize={'1.3em'} color="black" />
-            </IconButton>
           </Flex>
+        ) : (
           <Flex mb={5}>
             <Text ml={'5px'} pl="3" className="pendular">
               {'>'}
             </Text>
-            <Text pl={2}>{content.sentence}</Text>
           </Flex>
-        </Collapse>
-      ))}
-      <PracticeOption time={time} />
+        )}
+      </Collapse>
+      <PracticeOption
+        time={time}
+        nextQuestion={nextQuestion}
+        status={status}
+        history={history}
+        score={score}
+        setScore={setScore}
+      />
     </Box>
   )
 }
