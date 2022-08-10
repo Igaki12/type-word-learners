@@ -7,18 +7,47 @@ export const useHistory = () => {
       asking: '',
       remaining: [],
       isAnswered: 1,
+      finTime: '',
+      review: [],
     },
   ])
   const showHistory = () => {
     return [...history]
   }
-  const nextQuestion = (status) => {
+  const toggleReview = (id) => {
+    let newHistory = history[history.length - 1]
+    if (newHistory.review.indexOf(id) === -1) {
+      newHistory.review.push(id)
+    } else {
+      newHistory.review.splice(newHistory.review.indexOf(id), 1)
+    }
+    setHistory([...history, newHistory])
+    console.log('toggledReview:' + newHistory.review)
+  }
+  const nextQuestion = (status, score) => {
+    let newHistory = [...history][history.length - 1]
+    // 最後まで到達したときの結果保持
+    console.log(
+      score - history[history.length - 1].isAnswered >=
+        history[history.length - 1].remaining.length +
+          history[history.length - 1].asked.length +
+          1,
+    )
+    if (
+      score - history[history.length - 1].isAnswered >=
+      history[history.length - 1].remaining.length +
+        history[history.length - 1].asked.length +
+        1
+    ) {
+      newHistory.finTime = new Date()
+      console.log('everything is over:' + newHistory.finTime)
+    }
     if (history[history.length - 1].isAnswered === 0) {
       history[history.length - 1].isAnswered = 1
       return
     }
     history[history.length - 1].isAnswered = 0
-    let newHistory = [...history][history.length - 1]
+
     if (newHistory.asking !== '') {
       newHistory.asked.push(newHistory.asking)
       newHistory.asking = ''
@@ -26,6 +55,7 @@ export const useHistory = () => {
     if (newHistory.remaining.length < 1) {
       return
     }
+
     if (status.order === 'ascend') {
       console.log(newHistory.remaining.sort()[0])
       newHistory.asking = newHistory.remaining.sort()[0]
@@ -108,10 +138,10 @@ export const useHistory = () => {
     console.log(remaining)
     newHistory.remaining = remaining
     newHistory.asked = []
-    newHistory.asking = ""
+    newHistory.asking = ''
     setHistory([...history, newHistory])
     console.log('selected question:')
   }
 
-  return { showHistory, selectQuestion, nextQuestion }
+  return { showHistory, selectQuestion, nextQuestion,toggleReview }
 }

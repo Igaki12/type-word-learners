@@ -44,10 +44,19 @@ export const PracticeOption = ({
         </Button>
       </Box>
       <Box w="150px" h="40px" top={'20px'} right={'60px'} position="fixed">
-        <Progress colorScheme="gray" size="xs" value={20} />
+        <Progress
+          colorScheme="gray"
+          size="xs"
+          value={
+            ((score - history[history.length - 1].isAnswered) * 100) /
+            (history[history.length - 1].remaining.length +
+              history[history.length - 1].asked.length +
+              1)
+          }
+        />
         <Box textAlign={'right'} color="whiteAlpha.600">
           <EditIcon boxSize={'0.8em'} ml="2" mr={1} />
-          {score}/
+          {score - history[history.length - 1].isAnswered}/
           {history[history.length - 1].remaining.length +
             history[history.length - 1].asked.length +
             1}
@@ -55,11 +64,15 @@ export const PracticeOption = ({
           {time}
         </Box>
       </Box>
-      {-Element.scrollTop - Element.clientHeight + Element.scrollHeight >
-      100 ? (
+      {-Element.scrollTop - Element.clientHeight + Element.scrollHeight > 100 ||
+      score - 1 >=
+        history[history.length - 1].remaining.length +
+          history[history.length - 1].asked.length +
+          1 ? (
         <>
           <Box bottom={'12px'} right={'12px'} position="fixed">
             <Button
+              autoFocus
               boxShadow={'dark-lg'}
               colorScheme="whiteAlpha"
               borderRadius="sm"
@@ -76,6 +89,7 @@ export const PracticeOption = ({
         <>
           <Box bottom={'12px'} right={'12px'} position="fixed">
             <Button
+              autoFocus
               boxShadow={'dark-lg'}
               colorScheme="orange"
               borderRadius="sm"
@@ -83,7 +97,7 @@ export const PracticeOption = ({
               w={'60px'}
               h="60px"
               onClick={() => {
-                nextQuestion(status)
+                nextQuestion(status, score)
                 scrollToBottom()
                 setScore(score + history[history.length - 1].isAnswered)
               }}

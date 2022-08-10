@@ -93,7 +93,7 @@ export const Title = ({
             changeMode('practice')
             setText('練習開始')
             selectQuestion(status, vocabulary)
-            nextQuestion(status, vocabulary)
+            nextQuestion(status, -1)
           }}
         >
           {'>'}Practice
@@ -139,7 +139,7 @@ export const Title = ({
         pl="5"
         pt={'3'}
         pb="8"
-        mb="4"
+        mb="2"
         mt="4"
       >
         <Stack spacing={[4]} direction={['column']}>
@@ -150,7 +150,7 @@ export const Title = ({
               key={groupIndex}
               onChange={() => {
                 toggleVocabulary(groupIndex)
-                setText('ここに検索候補が表示されます')
+                setText('SELECTED QUESTIONS:')
               }}
             >
               {group.groupTag}
@@ -169,68 +169,8 @@ export const Title = ({
           </Checkbox>
         </Stack>
       </Box>
-      <Box margin={'auto'} maxW={'sm'} textAlign={'center'} mb="4">
-        <InputGroup>
-          <InputLeftElement
-            pointerEvents="none"
-            children={<Search2Icon color="gray.300" />}
-          />
-          <Input
-            type="text"
-            placeholder="Input keyword to search"
-            colorScheme={'blackAlpha'}
-            ref={searchWord}
-            onChange={() => {
-              setExpectTag(searchWord.current.value)
-            }}
-            onBlur={() => {
-              setExpectTag('')
-              addWordFilter(searchWord.current.value)
-              searchWord.current.value = ''
-            }}
-            // onFocus={setExpectTag('ここに結果が表示されます')}
-          />
-        </InputGroup>
-      </Box>
-      {expectTag ? (
-        <>
-          <Tag
-            size="lg"
-            borderRadius="sm"
-            variant="outline"
-            colorScheme="whiteAlpha"
-            w={'sm'}
-            fontSize="xl"
-            mb={1}
-          >
-            <Search2Icon color="gray.500" />
-            <TagLabel ml={3}>"{expectTag}"</TagLabel>
-            <Spacer />
-            {vocabulary.reduce((prevGroup, currentGroup) => {
-              return (
-                prevGroup +
-                currentGroup.groupContents.reduce(
-                  (prevContent, currentContent) => {
-                    if (
-                      currentContent.word.indexOf(expectTag) === -1 &&
-                      currentContent.sentence.indexOf(expectTag) === -1
-                    ) {
-                      return prevContent
-                    }
-                    return prevContent + 1
-                  },
-                  0,
-                )
-              )
-            }, 0)}
-            　Hits
-          </Tag>
-        </>
-      ) : (
-        <></>
-      )}
 
-      <Box margin={'auto'} maxW="sm" mb={4}>
+      <Box margin={'auto'} maxW="sm" mb={0}>
         <VStack spacing={1}>
           {status.wordFilter.map((word, i) => (
             <Tag
@@ -274,6 +214,66 @@ export const Title = ({
             </Tag>
           ))}
         </VStack>
+      </Box>
+      {expectTag ? (
+        <>
+          <Tag
+            size="lg"
+            borderRadius="sm"
+            variant="outline"
+            colorScheme="whiteAlpha"
+            w={'sm'}
+            fontSize="xl"
+            mb={2}
+            mt="1"
+          >
+            <Search2Icon color="gray.500" />
+            <TagLabel ml={3}>"{expectTag}"</TagLabel>
+            <Spacer />
+            {vocabulary.reduce((prevGroup, currentGroup) => {
+              return (
+                prevGroup +
+                currentGroup.groupContents.reduce(
+                  (prevContent, currentContent) => {
+                    if (
+                      currentContent.word.indexOf(expectTag) === -1 &&
+                      currentContent.sentence.indexOf(expectTag) === -1
+                    ) {
+                      return prevContent
+                    }
+                    return prevContent + 1
+                  },
+                  0,
+                )
+              )
+            }, 0)}
+            　Hits
+          </Tag>
+        </>
+      ) : (
+        <Box mb={2} mt="1"></Box>
+      )}
+      <Box margin={'auto'} maxW={'sm'} textAlign={'center'} mb="4">
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents="none"
+            children={<Search2Icon color="gray.300" />}
+          />
+          <Input
+            type="text"
+            placeholder="Input keyword to search"
+            colorScheme={'blackAlpha'}
+            ref={searchWord}
+            onChange={() => {
+              setExpectTag(searchWord.current.value)
+            }}
+            onBlur={() => {
+              setExpectTag('')
+              addWordFilter(searchWord.current.value)
+              searchWord.current.value = ''
+            }}
+          />
+        </InputGroup>
       </Box>
       <Text>{text}</Text>
       {vocabulary
@@ -418,7 +418,7 @@ export const Title = ({
                     <CloseIcon color={'red.100'} size="md" />
                   </IconButton>
                 </Flex>
-                <Flex textAlign={'left'} pl="3" fontSize={"lg"}>
+                <Flex textAlign={'left'} pl="3" fontSize={'lg'}>
                   <Text pr={1}>{'> '}</Text>
                   <Text>
                     {content.sentence.map((s, sentenceIndex) => (
@@ -445,7 +445,7 @@ export const Title = ({
           ))
         })}
       <Divider orientation="horizontal" maxW={'sm'} margin="auto" />
-      <Text color={'gray.300'} fontSize="sm">
+      <Text color={'gray.300'} fontSize="sm" mb={'500px'}>
         ©2022- IgaTatApps
       </Text>
       <TitleOption />

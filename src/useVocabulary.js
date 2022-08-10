@@ -3,7 +3,7 @@ import { useState } from 'react'
 export const useVocabulary = () => {
   const [vocabulary, setVocabulary] = useState([
     {
-      groupTag: 'GWL1st',
+      groupTag: 'GWL1',
       groupInfo: '9/1~9/14(仮)',
       groupContents: [
         {
@@ -16,7 +16,7 @@ export const useVocabulary = () => {
         },
         {
           word: 'renal',
-          sentence: 'Renal infarction may be the sign of atrial fibrillation',
+          sentence: 'Renal infarction may be the sign of atrial fibrillation.',
         },
         {
           word: 'syndrome',
@@ -24,7 +24,7 @@ export const useVocabulary = () => {
         },
         {
           word: 'liver',
-          sentence: 'Cholesterol may accumulate in the liver',
+          sentence: 'Cholesterol may accumulate in the liver.',
         },
         {
           word: 'transplant',
@@ -32,7 +32,7 @@ export const useVocabulary = () => {
         },
         {
           word: 'lesion',
-          sentence: 'The event alerted the patients to their lesions',
+          sentence: 'The event alerted the patients to their lesions.',
         },
         {
           word: 'acute',
@@ -50,7 +50,7 @@ export const useVocabulary = () => {
         },
         {
           word: 'primary',
-          sentence: 'The tests demonstrate the extent of primary liver tumors',
+          sentence: 'The tests demonstrate the extent of primary liver tumors.',
         },
         {
           word: 'disorder',
@@ -73,7 +73,7 @@ export const useVocabulary = () => {
         {
           word: 'surgical',
           sentence:
-            'Generally, advanced stage lung carcinoma is a consideration when a patient presents with hypercortisolism',
+            'Generally, advanced stage lung carcinoma is a consideration when a patient presents with hypercortisolism.',
         },
         {
           word: 'gene',
@@ -120,12 +120,12 @@ export const useVocabulary = () => {
         {
           word: 'lateral',
           sentence:
-            'In dim light, rod bipolar cells receive lateral inhibition from amacrine cells',
+            'In dim light, rod bipolar cells receive lateral inhibition from amacrine cells.',
         },
         {
           word: 'paediatric',
           sentence:
-            'Head trauma is a regular presentation in the paediatric emergency department',
+            'Head trauma is a regular presentation in the paediatric emergency department.',
         },
         {
           word: 'serum',
@@ -149,11 +149,11 @@ export const useVocabulary = () => {
         },
         {
           word: 'biopsy',
-          sentence: 'Cirrhosis was confirmed by biopsy',
+          sentence: 'Cirrhosis was confirmed by biopsy.',
         },
         {
           word: 'pulmonary',
-          sentence: 'Chest trauma can lead to a pulmonary contusion',
+          sentence: 'Chest trauma can lead to a pulmonary contusion.',
         },
         {
           word: 'pathology',
@@ -166,7 +166,7 @@ export const useVocabulary = () => {
         },
         {
           word: 'inhibit',
-          sentence: 'Paroxetine inhibits the reuptake of serotonin',
+          sentence: 'Paroxetine inhibits the reuptake of serotonin.',
         },
         {
           word: 'mutate',
@@ -187,7 +187,7 @@ export const useVocabulary = () => {
         },
         {
           word: 'abdomen',
-          sentence: 'I woke with pains in my abdomen',
+          sentence: 'I woke with pains in my abdomen.',
         },
         {
           word: 'defect',
@@ -261,7 +261,7 @@ export const useVocabulary = () => {
         {
           word: 'mechanism',
           sentence:
-            'DNA methylation is thought to be the principal mechanism of genomic imprinting',
+            'DNA methylation is thought to be the principal mechanism of genomic imprinting.',
         },
         {
           word: 'radiate',

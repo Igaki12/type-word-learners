@@ -36,7 +36,7 @@ export const useStatus = () => {
   const addWordFilter = (word) => {
     if (word === '') return
     let newStatus = status
-    newStatus.wordFilter.unshift(word)
+    newStatus.wordFilter.push(word)
     setStatus(newStatus)
     console.log('addWordFilter:' + status.wordFilter)
   }

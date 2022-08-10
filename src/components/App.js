@@ -17,7 +17,7 @@ function App() {
   } = useStatus()
   let status = showStatus()
   const vocabulary = showVocabulary()
-  const { showHistory, selectQuestion, nextQuestion } = useHistory()
+  const { showHistory, selectQuestion, nextQuestion,toggleReview } = useHistory()
   const history = showHistory()
   const [text, setText] = useState()
   return (
@@ -49,6 +49,7 @@ function App() {
             history={history}
             nextQuestion={nextQuestion}
             status={status}
+            toggleReview={toggleReview}
           />
         </>
       ) : (
