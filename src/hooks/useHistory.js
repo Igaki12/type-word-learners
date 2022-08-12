@@ -2,6 +2,7 @@ import { useState } from 'react'
 export const useHistory = () => {
   const [history, setHistory] = useState([
     {
+      id: '',
       startTime: '',
       asked: [],
       asking: '',
@@ -73,6 +74,7 @@ export const useHistory = () => {
   const selectQuestion = (status, vocabulary) => {
     let newHistory = [...history][history.length - 1]
     newHistory.startTime = new Date()
+    newHistory.id = new Date().getTime()
     let groupId = -1
     let remaining = vocabulary.reduce((prevGroup, currentGroup) => {
       groupId += 1
@@ -143,5 +145,5 @@ export const useHistory = () => {
     console.log('selected question:')
   }
 
-  return { showHistory, selectQuestion, nextQuestion,toggleReview }
+  return { showHistory, selectQuestion, nextQuestion, toggleReview }
 }

@@ -27,6 +27,35 @@ export const Practice = ({
   const [startTime, setStartTime] = useState(new Date().getTime() / 1000)
   const [time, setTime] = useState(0)
   const [score, setScore] = useState(1)
+  const saveStorage = (status, history) => {
+    let jsonData = [
+      {
+        app: 'twl',
+        status: status,
+        history: history[history.length - 1],
+      },
+    ]
+    if (localStorage.getItem('twl')) {
+      localStorage.setItem(
+        'twl',
+        JSON.stringify(
+          JSON.parse(localStorage.getItem('twl')).reduce(
+            (prev, currentStorage) => {
+              if (currentStorage.history.id === jsonData[0].history.id) {
+                console.log('被り:' + currentStorage.history.id)
+                return [...prev]
+              }
+              return [...prev, currentStorage]
+            },
+            jsonData,
+          ),
+        ),
+      )
+    } else {
+      localStorage.setItem('twl', JSON.stringify(jsonData))
+    }
+    console.log(localStorage.getItem('twl'))
+  }
   setInterval(
     () => setTime(Math.floor(new Date().getTime() / 1000 - startTime)),
     1000,
@@ -297,13 +326,24 @@ export const Practice = ({
             <Text color="orange.200">
               {history[history.length - 1].review.length}
             </Text>
-            <Text ml={1}> sentences are chosen to review.</Text>
+            <Text ml={1}> sentences are selected to review.</Text>
           </Flex>
           <Box textAlign={'center'} mt="2" mb={2}>
             {' '}
-            <Button colorScheme={'whiteAlpha'} borderRadius="sm">
-              Save and Go back to Title
-            </Button>
+            {history[history.length - 1].review.length > 0 ? (
+              <Button
+                colorScheme={'whiteAlpha'}
+                borderRadius="sm"
+                onClick={() => {
+                  saveStorage(status, history)
+                  document.location.reload(true)
+                }}
+              >
+                Save and Go back to Title
+              </Button>
+            ) : (
+              <></>
+            )}
           </Box>
           {history[history.length - 1].review.length === 0 ? (
             <></>
@@ -368,6 +408,7 @@ export const Practice = ({
         history={history}
         score={score}
         setScore={setScore}
+        saveStorage={saveStorage}
       />
     </Box>
   )

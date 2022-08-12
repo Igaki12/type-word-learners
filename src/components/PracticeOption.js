@@ -17,6 +17,7 @@ export const PracticeOption = ({
   history,
   score,
   setScore,
+  saveStorage,
 }) => {
   const Element = document.documentElement
   const scrollToBottom = () => {
@@ -98,8 +99,9 @@ export const PracticeOption = ({
               h="60px"
               onClick={() => {
                 nextQuestion(status, score)
-                scrollToBottom()
                 setScore(score + history[history.length - 1].isAnswered)
+                saveStorage(status, history)
+                scrollToBottom()
               }}
             >
               <ChevronDownIcon boxSize={'3em'} />
