@@ -70,7 +70,14 @@ export const Title = ({
               mb="3"
               key={dataIndex + 'Cont'}
             >
-              <Button borderRadius={"xs"} pl={'3'} fontSize={'2xl'} bgColor="gray" textAlign={'left'} pr="10">
+              <Button
+                borderRadius={'xs'}
+                pl={'3'}
+                fontSize={'2xl'}
+                bgColor="gray"
+                textAlign={'left'}
+                pr="10"
+              >
                 {'> '}Continue {dataIndex + 1}
               </Button>
               <Text fontWeight={'bold'} fontSize="xl">
@@ -143,8 +150,10 @@ export const Title = ({
                   >
                     review
                   </Badge>
-                  <Text fontSize={'sm'} color={"orange.200"} mr="1">{data.history.review.length}</Text>
-                  <Text fontSize={"sm"}>questions are selected</Text>
+                  <Text fontSize={'sm'} color={'orange.200'} mr="1">
+                    {data.history.review.length}
+                  </Text>
+                  <Text fontSize={'sm'}>questions are selected</Text>
                 </Flex>
               )}
             </Box>
@@ -185,6 +194,12 @@ export const Title = ({
           fontSize={'2xl'}
           pl="1"
           borderRadius={'sm'}
+          onClick={() => {
+            changeMode('easy')
+            setText('EASY開始')
+            selectQuestion(status, vocabulary)
+            nextQuestion(status, -1)
+          }}
         >
           {'>'}Easy {'('}for smartphone{')'}
         </Button>
