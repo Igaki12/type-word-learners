@@ -23,6 +23,7 @@ function App() {
     selectQuestion,
     nextQuestion,
     toggleReview,
+    selectChoice,
   } = useHistory()
   const history = showHistory()
   const [text, setText] = useState()
@@ -69,6 +70,7 @@ function App() {
             nextQuestion={nextQuestion}
             status={status}
             toggleReview={toggleReview}
+            selectChoice={selectChoice}
           ></Easy>
         </>
       ) : (

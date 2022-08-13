@@ -4,6 +4,14 @@
 .redTxt{
   color: rgb(255, 209, 119);
 }
+.revealTxt{
+  display: inline-block;
+  color: rgb(255, 209, 119);
+  padding-left: 5px;
+  padding-right: 5px;
+  min-width: 64px;
+  text-align: center;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

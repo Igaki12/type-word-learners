@@ -105,7 +105,10 @@ export const Title = ({
                 </Badge>
                 {data.history.startTime.slice(5, 10)}{' '}
                 {new Date(data.history.startTime).getHours()}:
-                {new Date(data.history.startTime).getMinutes()}~{' '}
+                {('00' + new Date(data.history.startTime).getMinutes()).slice(
+                  -2,
+                )}
+                ~{' '}
               </Text>
               <Text fontSize="md" mt="-1">
                 {data.status.vocabulary.map((num, i) => {
@@ -183,7 +186,7 @@ export const Title = ({
             changeMode('practice')
             setText('練習開始')
             selectQuestion(status, vocabulary)
-            nextQuestion(status, -1)
+            nextQuestion(status, -1, vocabulary)
           }}
         >
           {'>'}Practice
@@ -198,7 +201,7 @@ export const Title = ({
             changeMode('easy')
             setText('EASY開始')
             selectQuestion(status, vocabulary)
-            nextQuestion(status, -1)
+            nextQuestion(status, -1, vocabulary)
           }}
         >
           {'>'}Easy {'('}for smartphone{')'}

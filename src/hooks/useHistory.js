@@ -10,10 +10,22 @@ export const useHistory = () => {
       isAnswered: 1,
       finTime: '',
       review: [],
+      correct: 0,
+      incorrect: 0,
     },
   ])
   const showHistory = () => {
     return [...history]
+  }
+  const selectChoice = (index) => {
+    let newHistory = history[history.length - 1]
+    if (newHistory.answer === [] || newHistory.answer.indexOf(index) === -1) {
+      newHistory.answer.push(index)
+    } else {
+      newHistory.answer.splice(newHistory.answer.indexOf(index), 1)
+    }
+    setHistory([...history, newHistory])
+    console.log('selectChoice:' + newHistory.answer)
   }
   const toggleReview = (id) => {
     let newHistory = history[history.length - 1]
@@ -25,7 +37,8 @@ export const useHistory = () => {
     setHistory([...history, newHistory])
     console.log('toggledReview:' + newHistory.review)
   }
-  const nextQuestion = (status, score) => {
+
+  const nextQuestion = (status, score, vocabulary) => {
     let newHistory = [...history][history.length - 1]
     // 最後まで到達したときの結果保持
     console.log(
@@ -69,7 +82,52 @@ export const useHistory = () => {
       newHistory.remaining.splice(ranNum, 1)
     }
     if (status.mode === 'easy') {
+      if (newHistory.answer && newHistory.answer.length > 2) {
+        if (newHistory.answer === newHistory.answer.sort((a, b) => a - b)) {
+          newHistory.correct += 1
+          console.log('正解:' + newHistory.answer)
+        } else {
+          newHistory.review.push(newHistory.asked[newHistory.asked.length - 1])
+          newHistory.incorrect += 1
+          console.log('不正解:' + newHistory.answer)
+        }
+      }
+      // ここから次の問題の準備
       newHistory.choices = []
+      newHistory.answer = []
+      newHistory.isAnswered = 1
+      const askingGroupIndex = [
+        'a',
+        'b',
+        'c',
+        'd',
+        'e',
+        'f',
+        'g',
+        'h',
+        'i',
+        'j',
+        'k',
+        'l',
+        'm',
+        'n',
+        'o',
+        'p',
+        'q',
+        'r',
+        's',
+        't',
+        'u',
+        'v',
+        'w',
+        'x',
+        'y',
+        'z',
+      ].indexOf(newHistory.asking.slice(0, 1))
+      const askingContentIndex = parseInt(newHistory.asking.slice(1)) - 1
+      // console.log(
+      //   vocabulary[askingGroupIndex].groupContents[askingContentIndex].sentence,
+      // )
       let choiceBox = [
         0,
         1,
@@ -102,12 +160,33 @@ export const useHistory = () => {
         28,
         29,
         30,
-      ].splice(0, newHistory.asking.split(' ').length)
-      while (
-        newHistory.choices.length < 3 &&
-        newHistory.length < choiceBox.length
-      ) {
+      ].splice(
+        0,
+        vocabulary[askingGroupIndex].groupContents[
+          askingContentIndex
+        ].sentence.split(' ').length,
+      )
+      console.log(choiceBox)
+      while (newHistory.choices.length < 3) {
         const rand = Math.floor(Math.random() * choiceBox.length)
+        if (
+          newHistory.choices.length > 0 &&
+          newHistory.choices
+            .map(
+              (num) =>
+                vocabulary[askingGroupIndex].groupContents[
+                  askingContentIndex
+                ].sentence.split(' ')[num],
+            )
+            .indexOf(
+              vocabulary[askingGroupIndex].groupContents[
+                askingContentIndex
+              ].sentence.split(' ')[choiceBox[rand]],
+            ) !== -1
+        ) {
+          continue
+        }
+
         newHistory.choices.push(choiceBox[rand])
         choiceBox.splice(rand, 1)
       }
@@ -189,5 +268,11 @@ export const useHistory = () => {
     console.log('selected question:')
   }
 
-  return { showHistory, selectQuestion, nextQuestion, toggleReview }
+  return {
+    showHistory,
+    selectQuestion,
+    nextQuestion,
+    toggleReview,
+    selectChoice,
+  }
 }

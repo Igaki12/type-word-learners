@@ -1,12 +1,23 @@
 import React, { useState } from 'react'
-import { Button, Box, Progress } from '@chakra-ui/react'
 import {
+  Button,
+  Box,
+  Progress,
+  Text,
+  Spacer,
+  Flex,
+  Stat,
+  StatNumber,
+} from '@chakra-ui/react'
+import {
+  CheckCircleIcon,
   CheckIcon,
   ChevronDownIcon,
   EditIcon,
   RepeatIcon,
   SettingsIcon,
   TimeIcon,
+  WarningTwoIcon,
 } from '@chakra-ui/icons'
 import './App.css'
 
@@ -18,6 +29,7 @@ export const EasyOption = ({
   score,
   setScore,
   saveStorage,
+  vocabulary,
 }) => {
   const Element = document.documentElement
   const scrollToBottom = () => {
@@ -65,20 +77,68 @@ export const EasyOption = ({
           {time}
         </Box>
       </Box>
-      <Box bottom={'12px'} right={'12px'} position="fixed">
-        <Button
-          autoFocus
-          boxShadow={'dark-lg'}
-          colorScheme="whiteAlpha"
-          borderRadius="sm"
-          variant="solid"
-          w={'60px'}
-          h="60px"
-          onClick={scrollToBottom}
-        >
-          <ChevronDownIcon boxSize={'3em'} />
-        </Button>
+      <Box
+        w="70px"
+        maxH="100px"
+        p={2}
+        top={'12px'}
+        left={'12px'}
+        position="fixed"
+        bgColor={'whiteAlpha.500'}
+        boxShadow="dark-lg"
+      >
+        <Flex>
+          <CheckCircleIcon boxSize={'1.3em'} />
+          <Spacer />
+          {history[history.length - 1].correct}
+        </Flex>
+        <Flex>
+          <WarningTwoIcon boxSize={'1.3em'} />
+          <Spacer />
+          {history[history.length - 1].incorrect}
+        </Flex>
       </Box>
+      {history[history.length - 1].answer.length > 2 ? (
+        <>
+          <Box bottom={'12px'} right="80px" position={'fixed'}>
+            <Text color="orange">CHECK</Text>
+          </Box>
+          <Box bottom={'12px'} right={'12px'} position="fixed">
+            <Button
+              autoFocus
+              boxShadow={'dark-lg'}
+              colorScheme="orange"
+              borderRadius="sm"
+              variant="solid"
+              w={'60px'}
+              h="60px"
+              onClick={() => {
+                nextQuestion(status, score, vocabulary)
+                setScore(score + history[history.length - 1].isAnswered)
+                saveStorage(status, history)
+                scrollToBottom()
+              }}
+            >
+              <ChevronDownIcon boxSize={'3em'} />
+            </Button>
+          </Box>
+        </>
+      ) : (
+        <Box bottom={'12px'} right={'12px'} position="fixed">
+          <Button
+            autoFocus
+            boxShadow={'dark-lg'}
+            colorScheme="whiteAlpha"
+            borderRadius="sm"
+            variant="solid"
+            w={'60px'}
+            h="60px"
+            onClick={scrollToBottom}
+          >
+            <ChevronDownIcon boxSize={'3em'} />
+          </Button>
+        </Box>
+      )}
     </>
   )
 }

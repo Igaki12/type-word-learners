@@ -4,6 +4,7 @@ import {
   Button,
   Collapse,
   Flex,
+  Highlight,
   IconButton,
   Spacer,
   Text,
@@ -18,6 +19,7 @@ export const Easy = ({
   vocabulary,
   toggleReview,
   nextQuestion,
+  selectChoice,
 }) => {
   const [score, setScore] = useState(0)
   const [time, setTime] = useState(0)
@@ -283,65 +285,129 @@ export const Easy = ({
                 ].sentence
                   .split(' ')
                   .reduce((prev, currentWord) => {
-                    if ([0, 2].indexOf(prev.length) !== -1) {
-                      return [...prev, '__________']
+                    if (
+                      history[history.length - 1].choices.indexOf(
+                        prev.length,
+                      ) !== -1
+                    ) {
+                      console.log(
+                        history[history.length - 1].choices
+                          .sort((a, b) => a - b)
+                          .slice(0, history[history.length - 1].answer.length)
+                          .indexOf(prev.length),
+                      )
+                      // 文字を入力した後の判定
+                      if (
+                        history[history.length - 1].choices
+                          .sort((a, b) => a - b)
+                          .slice(0, history[history.length - 1].answer.length)
+                          .indexOf(prev.length) !== -1
+                      ) {
+                        return [
+                          ...prev,
+                          vocabulary[askingGroupIndex].groupContents[
+                            askingContentIndex
+                          ].sentence.split(' ')[
+                            history[history.length - 1].answer[
+                              history[history.length - 1].choices
+                                .sort((a, b) => a - b)
+                                .indexOf(prev.length)
+                            ]
+                          ],
+                        ]
+                      }
+                      return [...prev, '_________']
                     } else {
                       return [...prev, currentWord]
                     }
                   }, [])
-                  .map((word, i) => word + ' ')}
+                  .map((word, i) => {
+                    if (
+                      history[history.length - 1].answer.length > 0 &&
+                      history[history.length - 1].answer.indexOf(
+                        vocabulary[askingGroupIndex].groupContents[
+                          askingContentIndex
+                        ].sentence
+                          .split(' ')
+                          .indexOf(word),
+                      ) !== -1
+                    ) {
+                      return (
+                        <span key={i + 'easyAskingSpan'} className="revealTxt">
+                          {word
+                            .toLowerCase()
+                            .replace(/\.$/g, '')
+                            .replace(/\?$/g, '')
+                            .replace(/\!$/g, '') + ' '}
+                        </span>
+                      )
+                    } else {
+                      return (
+                        <span key={i + 'easyAskingSpan'}>{word + ' '}</span>
+                      )
+                    }
+                  })}
               </Text>
             </Flex>
           )}
         </Collapse>
-        <VStack spacing={4} maxW="xs" mt="3">
+        <VStack spacing={4} maxW="xs" mt="50px">
           {history[history.length - 1].choices.map((num, index) => (
-            <Button
-              w={'xs'}
-              borderRadius="xs"
-              colorScheme={'whiteAlpha'}
-              variant="solid"
-              fontSize={'lg'}
-              key={'choices' + index}
-            >
-              <Text ml={'5px'} pl="2" className="pendular">
-                {'>'}
-              </Text>
-              {
-                vocabulary[askingGroupIndex].groupContents[
-                  askingContentIndex
-                ].sentence.split(' ')[num]
-              }
-              <Spacer />
-            </Button>
+            <>
+              {history[history.length - 1].answer.length > 0 &&
+              history[history.length - 1].answer.indexOf(num) !== -1 ? (
+                <Button
+                  w={'xs'}
+                  borderRadius="xs"
+                  colorScheme={'blackAlpha'}
+                  variant="solid"
+                  fontSize={'lg'}
+                  key={'choices' + index}
+                  onClick={() => selectChoice(num)}
+                >
+                  <Text ml={'5px'} pl="2">
+                    {'>'}{' '}
+                  </Text>
+                  {vocabulary[askingGroupIndex].groupContents[
+                    askingContentIndex
+                  ].sentence
+                    .split(' ')
+                    [num].toLowerCase()
+                    .replace(/\.$/g, '')
+                    .replace(/\?$/g, '')
+                    .replace(/\!$/g, '')}
+                  <Spacer />
+                  <Text as={'i'} fontSize="xl" mr={2}>
+                    {history[history.length - 1].answer.indexOf(num) + 1}
+                  </Text>
+                </Button>
+              ) : (
+                <Button
+                  w={'xs'}
+                  borderRadius="xs"
+                  colorScheme={'whiteAlpha'}
+                  variant="solid"
+                  fontSize={'lg'}
+                  key={'choices' + index}
+                  onClick={() => selectChoice(num)}
+                  boxShadow="md"
+                >
+                  <Text ml={'5px'} pl="2" className="pendular">
+                    {'>'}
+                  </Text>
+                  {vocabulary[askingGroupIndex].groupContents[
+                    askingContentIndex
+                  ].sentence
+                    .split(' ')
+                    [num].toLowerCase()
+                    .replace(/\.$/g, '')
+                    .replace(/\?$/g, '')
+                    .replace(/\!$/g, '')}
+                  <Spacer />
+                </Button>
+              )}
+            </>
           ))}
-
-          <Button
-            w={'xs'}
-            borderRadius="xs"
-            colorScheme={'whiteAlpha'}
-            variant="solid"
-            fontSize={'lg'}
-          >
-            <Text ml={'5px'} pl="2" className="pendular">
-              {'>'}
-            </Text>
-            choice2
-            <Spacer />
-          </Button>
-          <Button
-            w={'xs'}
-            borderRadius="xs"
-            colorScheme={'whiteAlpha'}
-            variant="solid"
-            fontSize={'lg'}
-          >
-            <Text ml={'5px'} pl="2" className="pendular">
-              {'>'}
-            </Text>
-            choice3
-            <Spacer />
-          </Button>
         </VStack>
       </Box>
       <EasyOption
@@ -352,6 +418,7 @@ export const Easy = ({
         score={score}
         setScore={setScore}
         saveStorage={saveStorage}
+        vocabulary={vocabulary}
       />
     </>
   )
