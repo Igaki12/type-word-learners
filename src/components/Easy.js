@@ -297,7 +297,7 @@ export const Easy = ({
                         ],
                       ]
                     }
-                    return [...prev, '_________']
+                    return [...prev, '(　　　)']
                   } else {
                     return [...prev, currentWord]
                   }
@@ -337,8 +337,8 @@ export const Easy = ({
                 <Button
                   w={'xs'}
                   borderRadius="xs"
-                  colorScheme={'blackAlpha'}
-                  variant="solid"
+                  colorScheme={'whiteAlpha'}
+                  variant="outline"
                   fontSize={'lg'}
                   key={'choices' + index}
                   onClick={() => selectChoice(num)}

@@ -56,7 +56,7 @@ export const EasyOption = ({
           <SettingsIcon boxSize={'1.5em'} />
         </Button>
       </Box>
-      <Box w="150px" h="40px" top={'20px'} right={'60px'} position="fixed">
+      <Box w="150px" h="40px" top={'20px'} right={'60px'} position="fixed" >
         <Progress
           colorScheme="gray"
           size="xs"
@@ -84,7 +84,7 @@ export const EasyOption = ({
         top={'12px'}
         left={'12px'}
         position="fixed"
-        bgColor={'blackAlpha.500'}
+        bgColor={'blackAlpha.700'}
         boxShadow="dark-lg"
       >
         <Flex>
@@ -116,7 +116,7 @@ export const EasyOption = ({
                 nextQuestion(status, score, vocabulary)
                 setScore(score + history[history.length - 1].isAnswered)
                 saveStorage(status, history)
-                scrollToBottom()
+                setTimeout(() => scrollToBottom(), 50)
               }}
             >
               <ChevronDownIcon boxSize={'3em'} />
