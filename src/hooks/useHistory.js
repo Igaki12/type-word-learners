@@ -68,6 +68,50 @@ export const useHistory = () => {
       newHistory.asking = newHistory.remaining[ranNum]
       newHistory.remaining.splice(ranNum, 1)
     }
+    if (status.mode === 'easy') {
+      newHistory.choices = []
+      let choiceBox = [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+      ].splice(0, newHistory.asking.split(' ').length)
+      while (
+        newHistory.choices.length < 3 &&
+        newHistory.length < choiceBox.length
+      ) {
+        const rand = Math.floor(Math.random() * choiceBox.length)
+        newHistory.choices.push(choiceBox[rand])
+        choiceBox.splice(rand, 1)
+      }
+    }
     setHistory([...history, newHistory])
     console.log(newHistory)
   }

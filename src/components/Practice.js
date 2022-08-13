@@ -45,6 +45,10 @@ export const Practice = ({
                 console.log('被り:' + currentStorage.history.id)
                 return [...prev]
               }
+              if ([...prev, currentStorage].length > 9) {
+                console.log('超過:' + currentStorage)
+                return [...prev]
+              }
               return [...prev, currentStorage]
             },
             jsonData,
