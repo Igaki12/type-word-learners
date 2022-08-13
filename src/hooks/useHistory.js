@@ -41,12 +41,6 @@ export const useHistory = () => {
   const nextQuestion = (status, score, vocabulary) => {
     let newHistory = [...history][history.length - 1]
     // 最後まで到達したときの結果保持
-    console.log(
-      score - history[history.length - 1].isAnswered >=
-        history[history.length - 1].remaining.length +
-          history[history.length - 1].asked.length +
-          1,
-    )
     if (
       score - history[history.length - 1].isAnswered >=
       history[history.length - 1].remaining.length +
@@ -83,13 +77,24 @@ export const useHistory = () => {
     }
     if (status.mode === 'easy') {
       if (newHistory.answer && newHistory.answer.length > 2) {
-        if (newHistory.answer === newHistory.answer.sort((a, b) => a - b)) {
+        if (
+          newHistory.answer.every((num, index) => {
+            return (
+              num === newHistory.answer.slice().sort((a, b) => a - b)[index]
+            )
+          })
+        ) {
           newHistory.correct += 1
           console.log('正解:' + newHistory.answer)
         } else {
           newHistory.review.push(newHistory.asked[newHistory.asked.length - 1])
           newHistory.incorrect += 1
-          console.log('不正解:' + newHistory.answer)
+          console.log(
+            '不正解:' +
+              newHistory.answer +
+              '=>' +
+              newHistory.answer.slice().sort((a, b) => a - b),
+          )
         }
       }
       // ここから次の問題の準備
@@ -184,9 +189,9 @@ export const useHistory = () => {
               ].sentence.split(' ')[choiceBox[rand]],
             ) !== -1
         ) {
+          console.log('duplicated')
           continue
         }
-
         newHistory.choices.push(choiceBox[rand])
         choiceBox.splice(rand, 1)
       }

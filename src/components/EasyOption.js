@@ -84,7 +84,7 @@ export const EasyOption = ({
         top={'12px'}
         left={'12px'}
         position="fixed"
-        bgColor={'whiteAlpha.500'}
+        bgColor={'blackAlpha.500'}
         boxShadow="dark-lg"
       >
         <Flex>

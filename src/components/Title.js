@@ -201,7 +201,7 @@ export const Title = ({
             changeMode('easy')
             setText('EASY開始')
             selectQuestion(status, vocabulary)
-            nextQuestion(status, -1, vocabulary)
+            nextQuestion(status, 0, vocabulary)
           }}
         >
           {'>'}Easy {'('}for smartphone{')'}
@@ -246,7 +246,7 @@ export const Title = ({
             <Checkbox
               size={'lg'}
               colorScheme="gray"
-              key={groupIndex}
+              key={groupIndex + 'VG'}
               onChange={() => {
                 toggleVocabulary(groupIndex)
                 setText('SELECTED QUESTIONS:')
@@ -274,7 +274,7 @@ export const Title = ({
           {status.wordFilter.map((word, i) => (
             <Tag
               size="lg"
-              key={i}
+              key={i + 'VSw'}
               borderRadius="sm"
               variant="solid"
               colorScheme="whiteAlpha"

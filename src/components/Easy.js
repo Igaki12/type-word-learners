@@ -4,7 +4,6 @@ import {
   Button,
   Collapse,
   Flex,
-  Highlight,
   IconButton,
   Spacer,
   Text,
@@ -21,7 +20,7 @@ export const Easy = ({
   nextQuestion,
   selectChoice,
 }) => {
-  const [score, setScore] = useState(0)
+  const [score, setScore] = useState(1)
   const [time, setTime] = useState(0)
   const saveStorage = (status, history) => {
     let jsonData = [
@@ -124,16 +123,16 @@ export const Easy = ({
   ].indexOf(history[history.length - 1].asking.slice(0, 1))
   const askingContentIndex =
     parseInt(history[history.length - 1].asking.slice(1)) - 1
-  console.log(
-    'askingGroupIndex/askingContentIndex:' +
-      askingGroupIndex +
-      '/' +
-      askingContentIndex,
-  )
-  console.log(history[history.length - 1].asked)
+  // console.log(
+  //   'askingGroupIndex/askingContentIndex:' +
+  //     askingGroupIndex +
+  //     '/' +
+  //     askingContentIndex,
+  // )
+  // console.log(history[history.length - 1].asked)
   return (
     <>
-      <Box maxW={'lg'} m="auto" mt={10}>
+      <Box maxW={'lg'} m="auto" mt={'100px'}>
         {history[history.length - 1].asked.length === 0 ? (
           <></>
         ) : (
@@ -262,94 +261,73 @@ export const Easy = ({
             </Flex>
           )}
 
-          {history[history.length - 1].isAnswered === 1 ? (
-            <Flex mb={5} fontSize="lg">
-              <Text ml={'5px'} pl="3">
-                {'>'}
-              </Text>
-              <Text pl={2}>
-                {
-                  vocabulary[askingGroupIndex].groupContents[askingContentIndex]
-                    .sentence
-                }
-              </Text>
-            </Flex>
-          ) : (
-            <Flex mb={5} fontSize="lg">
-              <Text ml={'5px'} pl="3">
-                {'>'}
-              </Text>
-              <Text pl={2}>
-                {vocabulary[askingGroupIndex].groupContents[
-                  askingContentIndex
-                ].sentence
-                  .split(' ')
-                  .reduce((prev, currentWord) => {
+          <Flex mb={5} fontSize="lg">
+            <Text ml={'5px'} pl="3">
+              {'>'}
+            </Text>
+            <Text pl={2}>
+              {vocabulary[askingGroupIndex].groupContents[
+                askingContentIndex
+              ].sentence
+                .split(' ')
+                .reduce((prev, currentWord) => {
+                  if (
+                    history[history.length - 1].choices.indexOf(prev.length) !==
+                    -1
+                  ) {
+                    // 文字を入力した後の判定
                     if (
-                      history[history.length - 1].choices.indexOf(
-                        prev.length,
-                      ) !== -1
+                      history[history.length - 1].choices
+                        .slice()
+                        .sort((a, b) => a - b)
+                        .slice(0, history[history.length - 1].answer.length)
+                        .indexOf(prev.length) !== -1
                     ) {
-                      console.log(
-                        history[history.length - 1].choices
-                          .sort((a, b) => a - b)
-                          .slice(0, history[history.length - 1].answer.length)
-                          .indexOf(prev.length),
-                      )
-                      // 文字を入力した後の判定
-                      if (
-                        history[history.length - 1].choices
-                          .sort((a, b) => a - b)
-                          .slice(0, history[history.length - 1].answer.length)
-                          .indexOf(prev.length) !== -1
-                      ) {
-                        return [
-                          ...prev,
-                          vocabulary[askingGroupIndex].groupContents[
-                            askingContentIndex
-                          ].sentence.split(' ')[
-                            history[history.length - 1].answer[
-                              history[history.length - 1].choices
-                                .sort((a, b) => a - b)
-                                .indexOf(prev.length)
-                            ]
-                          ],
-                        ]
-                      }
-                      return [...prev, '_________']
-                    } else {
-                      return [...prev, currentWord]
-                    }
-                  }, [])
-                  .map((word, i) => {
-                    if (
-                      history[history.length - 1].answer.length > 0 &&
-                      history[history.length - 1].answer.indexOf(
+                      return [
+                        ...prev,
                         vocabulary[askingGroupIndex].groupContents[
                           askingContentIndex
-                        ].sentence
-                          .split(' ')
-                          .indexOf(word),
-                      ) !== -1
-                    ) {
-                      return (
-                        <span key={i + 'easyAskingSpan'} className="revealTxt">
-                          {word
-                            .toLowerCase()
-                            .replace(/\.$/g, '')
-                            .replace(/\?$/g, '')
-                            .replace(/\!$/g, '') + ' '}
-                        </span>
-                      )
-                    } else {
-                      return (
-                        <span key={i + 'easyAskingSpan'}>{word + ' '}</span>
-                      )
+                        ].sentence.split(' ')[
+                          history[history.length - 1].answer[
+                            history[history.length - 1].choices
+                              .slice()
+                              .sort((a, b) => a - b)
+                              .indexOf(prev.length)
+                          ]
+                        ],
+                      ]
                     }
-                  })}
-              </Text>
-            </Flex>
-          )}
+                    return [...prev, '_________']
+                  } else {
+                    return [...prev, currentWord]
+                  }
+                }, [])
+                .map((word, i) => {
+                  if (
+                    history[history.length - 1].answer.length > 0 &&
+                    history[history.length - 1].answer.indexOf(
+                      vocabulary[askingGroupIndex].groupContents[
+                        askingContentIndex
+                      ].sentence
+                        .split(' ')
+                        .indexOf(word),
+                    ) !== -1
+                  ) {
+                    return (
+                      <span key={i + 'easyAskingSpan'} className="revealTxt">
+                        {word
+                          .toLowerCase()
+                          .replace(/\.$/g, '')
+                          .replace(/\?$/g, '')
+                          .replace(/!$/g, '') + ' '}
+                      </span>
+                    )
+                  } else {
+                    return <span key={i + 'easyAskingSpan'}>{word + ' '}</span>
+                  }
+                })}
+            </Text>
+          </Flex>
         </Collapse>
         <VStack spacing={4} maxW="xs" mt="50px">
           {history[history.length - 1].choices.map((num, index) => (
@@ -375,7 +353,7 @@ export const Easy = ({
                     [num].toLowerCase()
                     .replace(/\.$/g, '')
                     .replace(/\?$/g, '')
-                    .replace(/\!$/g, '')}
+                    .replace(/!$/g, '')}
                   <Spacer />
                   <Text as={'i'} fontSize="xl" mr={2}>
                     {history[history.length - 1].answer.indexOf(num) + 1}
@@ -402,7 +380,7 @@ export const Easy = ({
                     [num].toLowerCase()
                     .replace(/\.$/g, '')
                     .replace(/\?$/g, '')
-                    .replace(/\!$/g, '')}
+                    .replace(/!$/g, '')}
                   <Spacer />
                 </Button>
               )}
