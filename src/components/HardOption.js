@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/icons'
 import './App.css'
 
-export const PracticeOption = ({
+export const HardOption = ({
   time,
   nextQuestion,
   status,
@@ -17,6 +17,7 @@ export const PracticeOption = ({
   score,
   setScore,
   saveStorage,
+  vocabulary,
 }) => {
   const Element = document.documentElement
   const scrollToBottom = () => {
@@ -97,7 +98,7 @@ export const PracticeOption = ({
               w={'60px'}
               h="60px"
               onClick={() => {
-                nextQuestion(status, score)
+                nextQuestion(status, score, vocabulary)
                 setScore(score + history[history.length - 1].isAnswered)
                 saveStorage(status, history)
                 scrollToBottom()

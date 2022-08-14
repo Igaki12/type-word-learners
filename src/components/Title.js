@@ -212,6 +212,12 @@ export const Title = ({
           fontSize={'2xl'}
           pl="1"
           borderRadius={'sm'}
+          onClick={() => {
+            changeMode('hard')
+            setText('HARD開始')
+            selectQuestion(status, vocabulary)
+            nextQuestion(status, 0, vocabulary)
+          }}
         >
           {'>'}Hard {'('}for PC{')'}
         </Button>

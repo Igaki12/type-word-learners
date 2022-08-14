@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   Text,
   Box,
@@ -10,12 +10,13 @@ import {
   Stat,
   StatNumber,
   StatHelpText,
+  Input,
 } from '@chakra-ui/react'
 import { CheckCircleIcon, RepeatIcon } from '@chakra-ui/icons'
-import { PracticeOption } from './PracticeOption'
+import { HardOption } from './HardOption'
 import './App.css'
 
-export const Practice = ({
+export const Hard = ({
   vocabulary,
   history,
   nextQuestion,
@@ -25,6 +26,9 @@ export const Practice = ({
   const [startTime, setStartTime] = useState(new Date().getTime() / 1000)
   const [time, setTime] = useState(0)
   const [score, setScore] = useState(1)
+  const inputEl = useRef('')
+  const [expectWord, setExpectWord] = useState(0)
+
   const saveStorage = (status, history) => {
     let jsonData = [
       {
@@ -120,13 +124,43 @@ export const Practice = ({
   ].indexOf(history[history.length - 1].asking.slice(0, 1))
   const askingContentIndex =
     parseInt(history[history.length - 1].asking.slice(1)) - 1
-  console.log(
-    'askingGroupIndex/askingContentIndex:' +
-      askingGroupIndex +
-      '/' +
-      askingContentIndex,
-  )
-  console.log(history[history.length - 1].asked)
+  const judgeExpectWord = () => {
+    console.log(
+      inputEl.current.value +
+        '=>' +
+        vocabulary[askingGroupIndex].groupContents[askingContentIndex].sentence
+          .toLowerCase()
+          .split(' '),
+    )
+    if (inputEl.current.value) {
+      setExpectWord(
+        inputEl.current.value.split(' ').reduce((prev, currentWord) => {
+          if (
+            vocabulary[askingGroupIndex].groupContents[
+              askingContentIndex
+            ].sentence
+              .toLowerCase()
+              .replace(/\.$/g, '')
+              .replace(/\?$/g, '')
+              .replace(/!$/g, '')
+              .split(' ')
+              .indexOf(currentWord.toLowerCase()) !== -1
+          ) {
+            return prev + 1
+          } else {
+            return prev
+          }
+        }, 0),
+      )
+    }
+  }
+  // console.log(
+  //   'askingGroupIndex/askingContentIndex:' +
+  //     askingGroupIndex +
+  //     '/' +
+  //     askingContentIndex,
+  // )
+  // console.log(history[history.length - 1].asked)
   // const time = useMemo(() => )
   // setInterval(() => {
   //   let nowTime = new Date()
@@ -262,26 +296,70 @@ export const Practice = ({
           </Flex>
         )}
 
-        {history[history.length - 1].isAnswered === 1 ? (
-          <Flex mb={5} fontSize="lg">
-            <Text ml={'5px'} pl="3">
-              {'>'}
-            </Text>
-            <Text pl={2}>
-              {
-                vocabulary[askingGroupIndex].groupContents[askingContentIndex]
-                  .sentence
-              }
-            </Text>
-          </Flex>
-        ) : (
-          <Flex mb={5} fontSize="lg">
-            <Text ml={'5px'} pl="3" className="pendular">
-              {'>'}
-            </Text>
-          </Flex>
-        )}
+        <Flex mb={5} fontSize="lg">
+          <Text ml={'5px'} pl="3" className="pendular">
+            {'>'}
+          </Text>
+          <Text p={2}>
+            {vocabulary[askingGroupIndex].groupContents[
+              askingContentIndex
+            ].sentence
+              .split(' ')
+              .map((word, index) => {
+                if (
+                  inputEl.current.value &&
+                  inputEl.current.value
+                    .toLowerCase()
+                    .replace(/\.$/g, '')
+                    .replace(/\?$/g, '')
+                    .replace(/!$/g, '')
+                    .split(' ')
+                    .indexOf(
+                      word
+                        .toLowerCase()
+                        .replace(/\.$/g, '')
+                        .replace(/\?$/g, '')
+                        .replace(/!$/g, ''),
+                    ) !== -1
+                ) {
+                  return (
+                    <span className="half-opacity" key={index + 'hAskingS'}>
+                      {word + ' '}
+                    </span>
+                  )
+                } else {
+                  return (
+                    <span className="opacity" key={index + 'hAskingS'}>
+                      {word + ' '}
+                    </span>
+                  )
+                }
+              })}
+            {' ('}
+            {' ' + expectWord + ' '}
+            {' / '}
+            {
+              vocabulary[askingGroupIndex].groupContents[
+                askingContentIndex
+              ].sentence.split(' ').length
+            }
+            {' words)'}
+          </Text>
+        </Flex>
       </Collapse>
+      <Input
+        mt={10}
+        variant="flushed"
+        placeholder="Type your answer."
+        size={'lg'}
+        focusBorderColor="orange.500"
+        errorBorderColor="red.300"
+        colorScheme={'blackAlpha'}
+        autoFocus
+        ref={inputEl}
+        onChange={judgeExpectWord}
+      />
+
       {score - 1 >=
       history[history.length - 1].remaining.length +
         history[history.length - 1].asked.length +
@@ -403,7 +481,7 @@ export const Practice = ({
       ) : (
         <></>
       )}
-      <PracticeOption
+      <HardOption
         time={time}
         nextQuestion={nextQuestion}
         status={status}
@@ -411,6 +489,7 @@ export const Practice = ({
         score={score}
         setScore={setScore}
         saveStorage={saveStorage}
+        vocabulary={vocabulary}
       />
     </Box>
   )

@@ -5,6 +5,7 @@ import { useStatus } from '../hooks/useStatus'
 import { useState } from 'react'
 import { useHistory } from '../hooks/useHistory'
 import { Easy } from './Easy'
+import { Hard } from './Hard'
 
 function App() {
   const { showVocabulary } = useVocabulary()
@@ -71,7 +72,20 @@ function App() {
             status={status}
             toggleReview={toggleReview}
             selectChoice={selectChoice}
-          ></Easy>
+          />
+        </>
+      ) : (
+        <></>
+      )}
+      {status.mode === 'hard' ? (
+        <>
+          <Hard
+            vocabulary={vocabulary}
+            history={history}
+            nextQuestion={nextQuestion}
+            status={status}
+            toggleReview={toggleReview}
+          />
         </>
       ) : (
         <></>

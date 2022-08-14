@@ -140,7 +140,7 @@ export const useVocabulary = () => {
         {
           word: 'recur',
           sentence:
-            'When the symptoms recurred , the doctor diagnosed something different.',
+            'When the symptoms recurred, the doctor diagnosed something different.',
         },
         {
           word: 'inflame',
