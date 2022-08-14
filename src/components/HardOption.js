@@ -90,7 +90,6 @@ export const HardOption = ({
         <>
           <Box bottom={'12px'} right={'12px'} position="fixed">
             <Button
-              autoFocus
               boxShadow={'dark-lg'}
               colorScheme="orange"
               borderRadius="sm"

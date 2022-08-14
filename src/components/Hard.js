@@ -22,6 +22,7 @@ export const Hard = ({
   nextQuestion,
   status,
   toggleReview,
+  checkTxtAnswer,
 }) => {
   const [startTime, setStartTime] = useState(new Date().getTime() / 1000)
   const [time, setTime] = useState(0)
@@ -152,6 +153,26 @@ export const Hard = ({
           }
         }, 0),
       )
+    }
+  }
+  const onKeyboard = (key) => {
+    switch (key) {
+      case 'Enter':
+        setExpectWord(999)
+        checkTxtAnswer(
+          inputEl.current.value,
+          vocabulary[askingGroupIndex].groupContents[askingContentIndex]
+            .sentence,
+        )
+        break
+      // case "ArrowUp":
+      //   selectPrevItem();
+      //   break;
+      // case "ArrowDown":
+      //   selectNextItem();
+      // break;
+      default:
+        break
     }
   }
   // console.log(
@@ -358,6 +379,7 @@ export const Hard = ({
         autoFocus
         ref={inputEl}
         onChange={judgeExpectWord}
+        onKeyDown={(e) => onKeyboard(e.key)}
       />
 
       {score - 1 >=

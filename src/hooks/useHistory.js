@@ -10,12 +10,155 @@ export const useHistory = () => {
       isAnswered: 1,
       finTime: '',
       review: [],
+      // 以下practice mode では使わない
       correct: 0,
       incorrect: 0,
+      // 以下hard限定
+      spellingCorrect: [],
+      orderCorrect: [],
     },
   ])
   const showHistory = () => {
     return [...history]
+  }
+  const checkTxtAnswer = (value, askingSentence) => {
+    let newHistory = history[history.length - 1]
+    newHistory.isAnswered = 1
+    const newSpellingCollect = askingSentence
+      .split(' ')
+      .reduce((prev, currentWord) => {
+        if (
+          // 100% match
+          value
+            .toLowerCase()
+            .replace(/\./g, '')
+            .replace(/\?/g, '')
+            .replace(/!/g, '')
+            .replace(/,/g, '')
+            .indexOf(
+              currentWord
+                .toLowerCase()
+                .replace(/\./g, '')
+                .replace(/\?/g, '')
+                .replace(/!/g, '')
+                .replace(/,/g, ''),
+            ) !== -1
+        ) {
+          return (
+            prev +
+            currentWord
+              .toLowerCase()
+              .replace(/\./g, '')
+              .replace(/\?/g, '')
+              .replace(/!/g, '')
+              .replace(/,/g, '').length /
+              [
+                value
+                  .toLowerCase()
+                  .replace(' ', '')
+                  .replace(/\./g, '')
+                  .replace(/\?/g, '')
+                  .replace(/!/g, '')
+                  .replace(/,/g, '').length,
+                askingSentence
+                  .toLowerCase()
+                  .replace(' ', '')
+                  .replace(/\./g, '')
+                  .replace(/\?/g, '')
+                  .replace(/!/g, '')
+                  .replace(/,/g, '').length,
+              ].sort((a, b) => b - a)[0]
+          )
+        }
+        return prev
+      }, 0)
+    newHistory.spellingCorrect.push(newSpellingCollect)
+    console.log('spelling collect:' + newSpellingCollect)
+    const answerOrder = askingSentence
+      .split(' ')
+      .reduce((prev, currentWord) => {
+        if (
+          // 100% match
+          value
+            .toLowerCase()
+            .replace(/\./g, '')
+            .replace(/\?/g, '')
+            .replace(/!/g, '')
+            .replace(/,/g, '')
+            .indexOf(
+              currentWord
+                .toLowerCase()
+                .replace(/\./g, '')
+                .replace(/\?/g, '')
+                .replace(/!/g, '')
+                .replace(/,/g, ''),
+            ) !== -1
+        ) {
+          if (
+            askingSentence
+              .toLowerCase()
+              .replace(/\./g, '')
+              .replace(/\?/g, '')
+              .replace(/!/g, '')
+              .replace(/,/g, '')
+              .match(
+                new RegExp(
+                  currentWord
+                    .toLowerCase()
+                    .replace(/\./g, '')
+                    .replace(/\?/g, '')
+                    .replace(/!/g, '')
+                    .replace(/,/g, ''),
+                  'g',
+                ),
+              ).length > 1
+          ) {
+            return prev
+          } else {
+            return [
+              ...prev,
+              value
+                .toLowerCase()
+                .replace(/\./g, '')
+                .replace(/\?/g, '')
+                .replace(/!/g, '')
+                .replace(/,/g, '')
+                .indexOf(
+                  currentWord
+                    .toLowerCase()
+                    .replace(/\./g, '')
+                    .replace(/\?/g, '')
+                    .replace(/!/g, '')
+                    .replace(/,/g, ''),
+                ),
+            ]
+          }
+        }
+        return prev
+      }, [])
+    console.log(answerOrder)
+    let newOrderCollect = 0
+    answerOrder.forEach((num, index) => {
+      if (index === 0) {
+        if (answerOrder.slice().sort((a, b) => a - b)[0] === num) {
+          newOrderCollect += 1 / answerOrder.length
+        }
+        return
+      } else if (index === answerOrder.length - 1) {
+        if (answerOrder.slice().sort((a, b) => b - a)[0] === num) {
+          newOrderCollect += 1 / answerOrder.length
+        }
+        return
+      } else if (num > answerOrder[index - 1] && num < answerOrder[index + 1]) {
+        newOrderCollect += 1 / answerOrder.length
+        return
+      } else if (num > answerOrder[index - 1] || num < answerOrder[index + 1]) {
+        newOrderCollect += 0.5 / answerOrder.length
+        return
+      }
+    })
+    newHistory.orderCorrect.push(newOrderCollect)
+    console.log('order collect:' + newOrderCollect)
   }
   const selectChoice = (index) => {
     let newHistory = history[history.length - 1]
@@ -279,5 +422,6 @@ export const useHistory = () => {
     nextQuestion,
     toggleReview,
     selectChoice,
+    checkTxtAnswer,
   }
 }
