@@ -18,6 +18,8 @@ export const HardOption = ({
   setScore,
   saveStorage,
   vocabulary,
+  checkTxtAnswer,
+  toastJudge,
 }) => {
   const Element = document.documentElement
   const scrollToBottom = () => {
@@ -97,10 +99,14 @@ export const HardOption = ({
               w={'60px'}
               h="60px"
               onClick={() => {
+                checkTxtAnswer()
                 nextQuestion(status, score, vocabulary)
                 setScore(score + history[history.length - 1].isAnswered)
                 saveStorage(status, history)
-                scrollToBottom()
+                setTimeout(() => {
+                  toastJudge()
+                  scrollToBottom()
+                }, 50)
               }}
             >
               <ChevronDownIcon boxSize={'3em'} />

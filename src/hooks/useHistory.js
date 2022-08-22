@@ -159,6 +159,11 @@ export const useHistory = () => {
     })
     newHistory.orderCorrect.push(newOrderCollect)
     console.log('order collect:' + newOrderCollect)
+    if (newOrderCollect <= 0.5 || newSpellingCollect <= 0.5) {
+      newHistory.review.push(newHistory.asking)
+    }
+    setHistory([...history, newHistory])
+    console.log('judged answer')
   }
   const selectChoice = (index) => {
     let newHistory = history[history.length - 1]

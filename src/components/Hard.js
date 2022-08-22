@@ -11,6 +11,7 @@ import {
   StatNumber,
   StatHelpText,
   Input,
+  useToast,
 } from '@chakra-ui/react'
 import { CheckCircleIcon, RepeatIcon } from '@chakra-ui/icons'
 import { HardOption } from './HardOption'
@@ -29,7 +30,7 @@ export const Hard = ({
   const [score, setScore] = useState(1)
   const inputEl = useRef('')
   const [expectWord, setExpectWord] = useState(0)
-
+  const toast = useToast()
   const saveStorage = (status, history) => {
     let jsonData = [
       {
@@ -155,15 +156,59 @@ export const Hard = ({
       )
     }
   }
+  const toastJudge = () => {
+    if (
+      history[history.length - 1].spellingCorrect !== [] &&
+      history[history.length - 1].orderCorrect !== [] &&
+      history[history.length - 1].spellingCorrect[
+        history[history.length - 1].spellingCorrect.length - 1
+      ] > 0.5 &&
+      history[history.length - 1].orderCorrect[
+        history[history.length - 1].orderCorrect.length - 1
+      ] > 0.5
+    ) {
+      toast({
+        title: 'Correct',
+        description: `Spelling: ${
+          history[history.length - 1].spellingCorrect[
+            history[history.length - 1].spellingCorrect.length - 1
+          ] * 100
+        }% >50% // Order:${
+          history[history.length - 1].orderCorrect[
+            history[history.length - 1].orderCorrect.length - 1
+          ] * 100
+        }% > 50%`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+    } else {
+      toast({
+        title: 'Wrong',
+        description: `Spelling: ${
+          history[history.length - 1].spellingCorrect[
+            history[history.length - 1].spellingCorrect.length - 1
+          ] * 100
+        }% // Order:${
+          history[history.length - 1].orderCorrect[
+            history[history.length - 1].orderCorrect.length - 1
+          ]
+        }%`,
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      })
+    }
+  }
   const onKeyboard = (key) => {
     switch (key) {
       case 'Enter':
-        setExpectWord(999)
         checkTxtAnswer(
           inputEl.current.value,
           vocabulary[askingGroupIndex].groupContents[askingContentIndex]
             .sentence,
         )
+        setTimeout(toastJudge, 50)
         break
       // case "ArrowUp":
       //   selectPrevItem();
@@ -512,6 +557,14 @@ export const Hard = ({
         setScore={setScore}
         saveStorage={saveStorage}
         vocabulary={vocabulary}
+        checkTxtAnswer={() =>
+          checkTxtAnswer(
+            inputEl.current.value,
+            vocabulary[askingGroupIndex].groupContents[askingContentIndex]
+              .sentence,
+          )
+        }
+        toastJudge={toastJudge}
       />
     </Box>
   )
