@@ -11,8 +11,9 @@ export const useHistory = () => {
       finTime: '',
       review: [],
       // 以下practice mode では使わない
-      correct: 0,
-      incorrect: 0,
+      result: [],
+      // correct: 0,
+      // incorrect: 0,
       // 以下hard限定
       spellingCorrect: [],
       orderCorrect: [],
@@ -161,6 +162,9 @@ export const useHistory = () => {
     console.log('order collect:' + newOrderCollect)
     if (newOrderCollect <= 0.5 || newSpellingCollect <= 0.5) {
       newHistory.review.push(newHistory.asking)
+      newHistory.result.push(false)
+    } else {
+      newHistory.result.push(true)
     }
     setHistory([...history, newHistory])
     console.log('judged answer')
@@ -232,11 +236,12 @@ export const useHistory = () => {
             )
           })
         ) {
-          newHistory.correct += 1
+          newHistory.result.push(true)
           console.log('正解:' + newHistory.answer)
         } else {
           newHistory.review.push(newHistory.asked[newHistory.asked.length - 1])
-          newHistory.incorrect += 1
+          // newHistory.incorrect += 1
+          newHistory.result.push(false)
           console.log(
             '不正解:' +
               newHistory.answer +

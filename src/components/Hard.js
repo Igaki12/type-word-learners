@@ -42,6 +42,8 @@ export const Hard = ({
     let jsonData = [
       {
         app: 'twl',
+        score: score,
+        time: time,
         status: status,
         history: history[history.length - 1],
       },

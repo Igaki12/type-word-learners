@@ -30,6 +30,8 @@ export const Practice = ({
       {
         app: 'twl',
         status: status,
+        time: time,
+        score: score,
         history: history[history.length - 1],
       },
     ]

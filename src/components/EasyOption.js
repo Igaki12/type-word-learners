@@ -9,6 +9,9 @@ import {
   Stat,
   StatNumber,
   Divider,
+  Center,
+  CircularProgress,
+  CircularProgressLabel,
 } from '@chakra-ui/react'
 import {
   CheckCircleIcon,
@@ -31,6 +34,7 @@ export const EasyOption = ({
   setScore,
   saveStorage,
   vocabulary,
+  toastJudge,
 }) => {
   const Element = document.documentElement
   const scrollToBottom = () => {
@@ -79,27 +83,66 @@ export const EasyOption = ({
         </Box>
       </Box>
       <Box
+        top={'12px'}
+        left={'12px'}
+        pl="1"
+        pr="1"
+        borderRadius={'sm'}
+        position="fixed"
+        boxShadow="dark-lg"
+        bgColor="blackAlpha.700"
+      >
+        <CircularProgress
+          thickness="5px"
+          // trackColor="whiteAlpha"
+          value={history[history.length - 1].result.reduce(
+            (prev, currentResult) => {
+              if (currentResult === true) {
+                return prev + 100 / history[history.length - 1].result.length
+              } else {
+                return prev
+              }
+            },
+            0,
+          )}
+          color="teal.400"
+        >
+          <CircularProgressLabel color={'whiteAlpha.900'} fontSize="lg" >
+            {history[history.length - 1].result.reduce(
+              (prev, currentResult) => {
+                if (currentResult === true) {
+                  return prev + 1
+                } else {
+                  return prev
+                }
+              },
+              0,
+            )}
+          </CircularProgressLabel>
+        </CircularProgress>
+      </Box>
+      {/* <Box
         w="70px"
         maxH="100px"
         p={2}
-        top={'12px'}
+        top={'60px'}
         left={'12px'}
         position="fixed"
         bgColor={'blackAlpha.700'}
         boxShadow="dark-lg"
       >
         <Flex>
-          <CheckCircleIcon boxSize={'1.3em'} />
-          <Spacer />
-          {history[history.length - 1].correct}
-        </Flex>
-        <Divider orientation="horizontal" mt={1} mb="1" />
-        <Flex>
           <WarningTwoIcon boxSize={'1.3em'} />
           <Spacer />
-          {history[history.length - 1].incorrect}
+          {history[history.length - 1].result.reduce((prev, currentResult) => {
+            if (currentResult === false) {
+              return prev + 1
+            } else {
+              return prev
+            }
+          }, 0)}
         </Flex>
-      </Box>
+      </Box> */}
       {history[history.length - 1].answer.length > 2 ? (
         <>
           <Box bottom={'12px'} right="80px" position={'fixed'}>
@@ -118,7 +161,10 @@ export const EasyOption = ({
                 nextQuestion(status, score, vocabulary)
                 setScore(score + history[history.length - 1].isAnswered)
                 saveStorage(status, history)
-                setTimeout(() => scrollToBottom(), 50)
+                setTimeout(() => {
+                  toastJudge()
+                  scrollToBottom()
+                }, 50)
               }}
             >
               <ChevronDownIcon boxSize={'3em'} />

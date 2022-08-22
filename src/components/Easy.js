@@ -8,6 +8,7 @@ import {
   Spacer,
   Text,
   VStack,
+  useToast,
 } from '@chakra-ui/react'
 import './App.css'
 import { EasyOption } from './EasyOption'
@@ -22,11 +23,14 @@ export const Easy = ({
 }) => {
   const [score, setScore] = useState(1)
   const [time, setTime] = useState(0)
+  const toast = useToast()
   const saveStorage = (status, history) => {
     let jsonData = [
       {
         app: 'twl',
         status: status,
+        score: score,
+        time: time,
         history: history[history.length - 1],
       },
     ]
@@ -123,6 +127,37 @@ export const Easy = ({
   ].indexOf(history[history.length - 1].asking.slice(0, 1))
   const askingContentIndex =
     parseInt(history[history.length - 1].asking.slice(1)) - 1
+  const toastJudge = () => {
+    if (
+      history[history.length - 1] &&
+      history[history.length - 1].result[
+        history[history.length - 1].result.length - 1
+      ] === true
+    ) {
+      toast({
+        title: 'Correct',
+        // description:``,
+        status: 'success',
+        duration: 2000,
+        isClosable: false,
+        position: 'top-left',
+      })
+    } else if (
+      history[history.length - 1] &&
+      history[history.length - 1].result[
+        history[history.length - 1].result.length - 1
+      ] === false
+    ) {
+      toast({
+        title: 'Wrong',
+        // description:``,
+        status: 'warning',
+        duration: 2000,
+        isClosable: false,
+        position: 'top-left',
+      })
+    }
+  }
   // console.log(
   //   'askingGroupIndex/askingContentIndex:' +
   //     askingGroupIndex +
@@ -329,13 +364,13 @@ export const Easy = ({
             </Text>
           </Flex>
         </Collapse>
-        <VStack spacing={4} maxW="xs" mt="50px">
+        <VStack spacing={4} maxW="2xs" mt="50px" ml={2} >
           {history[history.length - 1].choices.map((num, index) => (
             <>
               {history[history.length - 1].answer.length > 0 &&
               history[history.length - 1].answer.indexOf(num) !== -1 ? (
                 <Button
-                  w={'xs'}
+                  w={'2xs'}
                   borderRadius="xs"
                   colorScheme={'whiteAlpha'}
                   variant="outline"
@@ -361,7 +396,7 @@ export const Easy = ({
                 </Button>
               ) : (
                 <Button
-                  w={'xs'}
+                  w={'2xs'}
                   borderRadius="xs"
                   colorScheme={'whiteAlpha'}
                   variant="solid"
@@ -397,6 +432,7 @@ export const Easy = ({
         setScore={setScore}
         saveStorage={saveStorage}
         vocabulary={vocabulary}
+        toastJudge={toastJudge}
       />
     </>
   )
