@@ -233,7 +233,7 @@ export const Hard = ({
             .sentence,
         )
         nextQuestion(status, score, vocabulary)
-        setScore(score + history[history.length - 1].isAnswered)
+        setScore(score + 1)
         saveStorage(status, history)
         setTimeout(() => {
           toastJudge()
