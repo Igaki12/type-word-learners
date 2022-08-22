@@ -31,6 +31,13 @@ export const Hard = ({
   const inputEl = useRef('')
   const [expectWord, setExpectWord] = useState(0)
   const toast = useToast()
+  const scrollToBottom = () => {
+    const Element = document.documentElement
+    window.scrollTo({
+      top: Element.scrollHeight - Element.clientHeight,
+      behavior: 'smooth',
+    })
+  }
   const saveStorage = (status, history) => {
     let jsonData = [
       {
@@ -170,35 +177,52 @@ export const Hard = ({
       toast({
         title: 'Correct',
         description: `Spelling: ${
-          history[history.length - 1].spellingCorrect[
-            history[history.length - 1].spellingCorrect.length - 1
-          ] * 100
-        }% >50% // Order:${
-          history[history.length - 1].orderCorrect[
-            history[history.length - 1].orderCorrect.length - 1
-          ] * 100
-        }% > 50%`,
+          Math.round(
+            100 *
+              history[history.length - 1].spellingCorrect[
+                history[history.length - 1].spellingCorrect.length - 1
+              ],
+          ) / 10
+        }/10 　 Order:${
+          Math.round(
+            100 *
+              history[history.length - 1].orderCorrect[
+                history[history.length - 1].orderCorrect.length - 1
+              ],
+          ) / 10
+        }/10`,
         status: 'success',
         duration: 3000,
         isClosable: true,
+        position: 'top-left',
       })
     } else {
       toast({
         title: 'Wrong',
         description: `Spelling: ${
-          history[history.length - 1].spellingCorrect[
-            history[history.length - 1].spellingCorrect.length - 1
-          ] * 100
-        }% // Order:${
-          history[history.length - 1].orderCorrect[
-            history[history.length - 1].orderCorrect.length - 1
-          ]
-        }%`,
+          Math.round(
+            100 *
+              history[history.length - 1].spellingCorrect[
+                history[history.length - 1].spellingCorrect.length - 1
+              ],
+          ) / 10
+        }/10 　 Order:${
+          Math.round(
+            100 *
+              history[history.length - 1].orderCorrect[
+                history[history.length - 1].orderCorrect.length - 1
+              ],
+          ) / 10
+        }/10`,
         status: 'warning',
         duration: 3000,
         isClosable: true,
+        position: 'top-left',
       })
     }
+    // 初期化コードもここに記載しておく
+    inputEl.current.value = ''
+    setExpectWord(0)
   }
   const onKeyboard = (key) => {
     switch (key) {
@@ -208,7 +232,13 @@ export const Hard = ({
           vocabulary[askingGroupIndex].groupContents[askingContentIndex]
             .sentence,
         )
-        setTimeout(toastJudge, 50)
+        nextQuestion(status, score, vocabulary)
+        setScore(score + history[history.length - 1].isAnswered)
+        saveStorage(status, history)
+        setTimeout(() => {
+          toastJudge()
+          scrollToBottom()
+        }, 50)
         break
       // case "ArrowUp":
       //   selectPrevItem();

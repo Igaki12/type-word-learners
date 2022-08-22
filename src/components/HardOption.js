@@ -3,9 +3,11 @@ import {
   CheckIcon,
   ChevronDownIcon,
   EditIcon,
+  QuestionOutlineIcon,
   RepeatIcon,
   SettingsIcon,
   TimeIcon,
+  ViewIcon,
 } from '@chakra-ui/icons'
 import './App.css'
 
@@ -101,7 +103,7 @@ export const HardOption = ({
               onClick={() => {
                 checkTxtAnswer()
                 nextQuestion(status, score, vocabulary)
-                setScore(score + history[history.length - 1].isAnswered)
+                setScore(score + 1)
                 saveStorage(status, history)
                 setTimeout(() => {
                   toastJudge()
@@ -123,7 +125,7 @@ export const HardOption = ({
           w={'40px'}
           h="40px"
         >
-          <RepeatIcon boxSize={'1.5em'} color="red.100" />
+          <QuestionOutlineIcon boxSize={'1.5em'} />
         </Button>
       </Box>
       <Box bottom={'140px'} right={'12px'} position="fixed">
@@ -135,7 +137,7 @@ export const HardOption = ({
           w={'40px'}
           h="40px"
         >
-          <CheckIcon boxSize={'1.5em'} color="teal.100" />
+          <ViewIcon boxSize={'1.5em'} />
         </Button>
       </Box>
     </>

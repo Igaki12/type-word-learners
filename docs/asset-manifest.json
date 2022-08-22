@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/type-word-learners/static/css/main.41b2e884.css",
-    "main.js": "/type-word-learners/static/js/main.a122e1f0.js",
+    "main.js": "/type-word-learners/static/js/main.d7514444.js",
     "static/media/title3.png": "/type-word-learners/static/media/title3.440b9ea6a4e2aa3c8554.png",
     "index.html": "/type-word-learners/index.html",
     "main.41b2e884.css.map": "/type-word-learners/static/css/main.41b2e884.css.map",
-    "main.a122e1f0.js.map": "/type-word-learners/static/js/main.a122e1f0.js.map"
+    "main.d7514444.js.map": "/type-word-learners/static/js/main.d7514444.js.map"
   },
   "entrypoints": [
     "static/css/main.41b2e884.css",
-    "static/js/main.a122e1f0.js"
+    "static/js/main.d7514444.js"
   ]
 }

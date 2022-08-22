@@ -37,7 +37,7 @@ export const useVocabulary = () => {
         {
           word: 'acute',
           sentence:
-            'Acute stress disorder was first added to teh DSM-IV in 1994.',
+            'Acute stress disorder was first added to the DSM-IV in 1994.',
         },
         {
           word: 'chronic',
