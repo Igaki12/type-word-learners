@@ -8,6 +8,7 @@ import {
   Flex,
   Stat,
   StatNumber,
+  Divider,
 } from '@chakra-ui/react'
 import {
   CheckCircleIcon,
@@ -56,7 +57,7 @@ export const EasyOption = ({
           <SettingsIcon boxSize={'1.5em'} />
         </Button>
       </Box>
-      <Box w="150px" h="40px" top={'20px'} right={'60px'} position="fixed" >
+      <Box w="150px" h="40px" top={'20px'} right={'60px'} position="fixed">
         <Progress
           colorScheme="gray"
           size="xs"
@@ -92,6 +93,7 @@ export const EasyOption = ({
           <Spacer />
           {history[history.length - 1].correct}
         </Flex>
+        <Divider orientation="horizontal" mt={1} mb="1" />
         <Flex>
           <WarningTwoIcon boxSize={'1.3em'} />
           <Spacer />

@@ -193,7 +193,7 @@ export const Hard = ({
         }/10`,
         status: 'success',
         duration: 3000,
-        isClosable: true,
+        isClosable: false,
         position: 'top-left',
       })
     } else {
@@ -216,7 +216,7 @@ export const Hard = ({
         }/10`,
         status: 'warning',
         duration: 3000,
-        isClosable: true,
+        isClosable: false,
         position: 'top-left',
       })
     }
