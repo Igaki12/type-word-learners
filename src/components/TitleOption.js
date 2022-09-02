@@ -34,7 +34,7 @@ export const TitleOption = ({}) => {
     })
   }
   return (
-    <>
+    <Box position="relative">
       {document.documentElement.scrollTop > 100 ? (
         <Box bottom={3} right={3} position="fixed">
           <Button
@@ -150,6 +150,6 @@ export const TitleOption = ({}) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </Box>
   )
 }
