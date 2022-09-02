@@ -107,6 +107,7 @@ export const Title = ({
           pl="1"
           borderRadius={'sm'}
           onClick={() => {
+            if (status.vocabulary.length === 0) return
             changeMode('practice')
             setText('練習開始')
             selectQuestion(status, vocabulary)
@@ -123,6 +124,7 @@ export const Title = ({
           pl="1"
           borderRadius={'sm'}
           onClick={() => {
+            if (status.vocabulary.length === 0) return
             changeMode('easy')
             setText('EASY開始')
             selectQuestion(status, vocabulary)
@@ -139,6 +141,7 @@ export const Title = ({
           pl="1"
           borderRadius={'sm'}
           onClick={() => {
+            if (status.vocabulary.length === 0) return
             changeMode('hard')
             setText('HARD開始')
             selectQuestion(status, vocabulary)
