@@ -473,124 +473,136 @@ export const Title = ({
       <Text color={'gray.300'} fontSize="sm" mb={'500px'}>
         ©2022- IgaTatApps
       </Text>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent color={'white'} bg="gray.700">
-          <ModalHeader m={'auto'}>DATA</ModalHeader>
-          <Divider orientation="horizontal" m={'auto'} />
-          <ModalCloseButton />
-          <ModalBody m={'auto'}>
-            {JSON.parse(localStorage.getItem('twl')).map((data, dataIndex) => (
-              <Box
-                margin={'auto'}
-                w={'xs'}
-                p="3"
-                textAlign={'left'}
-                borderRadius="lg"
-                border={'1px'}
-                mb="3"
-                key={dataIndex + 'Cont'}
-              >
-                <Button
-                  borderRadius={'xs'}
-                  pl={'3'}
-                  fontSize={'2xl'}
-                  bgColor="gray"
-                  textAlign={'left'}
-                  pr="10"
-                >
-                  {'> '}Continue {dataIndex + 1}
-                </Button>
-                <Text fontWeight={'bold'} fontSize="xl">
-                  <Badge
-                    mb="1"
-                    variant="outline"
-                    pr={2}
-                    pl="2"
-                    colorScheme="gray"
-                    borderRadius={'full'}
-                    mr="1"
+      {localStorage.getItem('twl') ? (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent color={'white'} bg="gray.700">
+            <ModalHeader m={'auto'}>DATA</ModalHeader>
+            <Divider orientation="horizontal" m={'auto'} />
+            <ModalCloseButton />
+            <ModalBody m={'auto'}>
+              {JSON.parse(localStorage.getItem('twl')).map(
+                (data, dataIndex) => (
+                  <Box
+                    margin={'auto'}
+                    w={'xs'}
+                    p="3"
+                    textAlign={'left'}
+                    borderRadius="lg"
+                    border={'1px'}
+                    mb="3"
+                    key={dataIndex + 'Cont'}
                   >
-                    {data.status.mode}
-                  </Badge>
-                  <Badge
-                    mb="1"
-                    variant="outline"
-                    pr={2}
-                    pl="2"
-                    colorScheme="gray"
-                    borderRadius={'full'}
-                    mr="2"
-                  >
-                    {data.status.order}
-                  </Badge>
-                  {data.history.startTime.slice(5, 10)}{' '}
-                  {new Date(data.history.startTime).getHours()}:
-                  {('00' + new Date(data.history.startTime).getMinutes()).slice(
-                    -2,
-                  )}
-                  ~{' '}
-                </Text>
-                <Text fontSize="md" mt="-1">
-                  {data.status.vocabulary.map((num, i) => {
-                    if (i > 2) {
-                      return '.'
-                    } else {
-                      return vocabulary[num].groupTag + ' '
-                    }
-                  })}
-                  {data.status.wordFilter.length > 0 ? (
-                    <>
-                      <Search2Icon ml={2} mr="1" fontSize="sm" color={'gray'} />
-                      {data.status.wordFilter.map((word, i) => {
+                    <Button
+                      borderRadius={'xs'}
+                      pl={'3'}
+                      fontSize={'2xl'}
+                      bgColor="gray"
+                      textAlign={'left'}
+                      pr="10"
+                    >
+                      {'> '}Continue {dataIndex + 1}
+                    </Button>
+                    <Text fontWeight={'bold'} fontSize="xl">
+                      <Badge
+                        mb="1"
+                        variant="outline"
+                        pr={2}
+                        pl="2"
+                        colorScheme="gray"
+                        borderRadius={'full'}
+                        mr="1"
+                      >
+                        {data.status.mode}
+                      </Badge>
+                      <Badge
+                        mb="1"
+                        variant="outline"
+                        pr={2}
+                        pl="2"
+                        colorScheme="gray"
+                        borderRadius={'full'}
+                        mr="2"
+                      >
+                        {data.status.order}
+                      </Badge>
+                      {data.history.startTime.slice(5, 10)}{' '}
+                      {new Date(data.history.startTime).getHours()}:
+                      {(
+                        '00' + new Date(data.history.startTime).getMinutes()
+                      ).slice(-2)}
+                      ~{' '}
+                    </Text>
+                    <Text fontSize="md" mt="-1">
+                      {data.status.vocabulary.map((num, i) => {
                         if (i > 2) {
                           return '.'
                         } else {
-                          return word + ' '
+                          return vocabulary[num].groupTag + ' '
                         }
                       })}
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </Text>
-                <Text fontSize={'md'}>
-                  {data.history.remaining.length}
-                  {' / '}
-                  {data.history.asked.length +
-                    data.history.remaining.length +
-                    1}{' '}
-                  questions left
-                </Text>
-                {data.history.remaining.length > 0 ? (
-                  <></>
-                ) : (
-                  <Flex>
-                    <Badge
-                      colorScheme={'orange'}
-                      variant="outline"
-                      m={0.5}
-                      mr="2"
-                    >
-                      review
-                    </Badge>
-                    <Text fontSize={'sm'} color={'orange.200'} mr="1">
-                      {data.history.review.length}
+                      {data.status.wordFilter.length > 0 ? (
+                        <>
+                          <Search2Icon
+                            ml={2}
+                            mr="1"
+                            fontSize="sm"
+                            color={'gray'}
+                          />
+                          {data.status.wordFilter.map((word, i) => {
+                            if (i > 2) {
+                              return '.'
+                            } else {
+                              return word + ' '
+                            }
+                          })}
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </Text>
-                    <Text fontSize={'sm'}>questions are selected</Text>
-                  </Flex>
-                )}
-              </Box>
-            ))}
-          </ModalBody>
+                    <Text fontSize={'md'}>
+                      {data.history.remaining.length}
+                      {' / '}
+                      {data.history.asked.length +
+                        data.history.remaining.length +
+                        1}{' '}
+                      questions left
+                    </Text>
+                    {data.history.remaining.length > 0 ? (
+                      <></>
+                    ) : (
+                      <Flex>
+                        <Badge
+                          colorScheme={'orange'}
+                          variant="outline"
+                          m={0.5}
+                          mr="2"
+                        >
+                          review
+                        </Badge>
+                        <Text fontSize={'sm'} color={'orange.200'} mr="1">
+                          {data.history.review.length}
+                        </Text>
+                        <Text fontSize={'sm'}>questions are selected</Text>
+                      </Flex>
+                    )}
+                  </Box>
+                ),
+              )}
+            </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="orange" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+            <ModalFooter>
+              <Button colorScheme="orange" mr={3} onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      ) : (
+        <></>
+      )}
+
       <TitleOption />
     </Box>
   )
