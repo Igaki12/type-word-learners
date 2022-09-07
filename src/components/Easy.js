@@ -28,6 +28,7 @@ export const Easy = ({
     let jsonData = [
       {
         app: 'twl',
+        latestUpdate: new Date().getTime(),
         status: status,
         score: score,
         time: time,
@@ -364,7 +365,7 @@ export const Easy = ({
             </Text>
           </Flex>
         </Collapse>
-        <VStack spacing={4} maxW="2xs" mt="50px" ml={2} >
+        <VStack spacing={4} maxW="2xs" mt="50px" ml={2}>
           {history[history.length - 1].choices.map((num, index) => (
             <>
               {history[history.length - 1].answer.length > 0 &&

@@ -29,6 +29,7 @@ export const Practice = ({
     let jsonData = [
       {
         app: 'twl',
+        latestUpdate:new Date().getTime(),
         status: status,
         time: time,
         score: score,

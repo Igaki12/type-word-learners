@@ -42,6 +42,7 @@ export const Hard = ({
     let jsonData = [
       {
         app: 'twl',
+        latestUpdate:new Date().getTime(),
         score: score,
         time: time,
         status: status,
